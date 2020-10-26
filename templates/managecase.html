@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <link rel="icon" href="/static_all/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/static_all/bootstrap/css/bootstrap.min.css">
+    <script rel="stylesheet" href="/static_all/jquery-3.3.1.js"></script>
+    <script rel="stylesheet" href="/static_all/bootstrap/js/bootstrap.min.js"></script>
+    <script rel="stylesheet" href="/static_all/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1688554_nlhpsm5qbxl.css">
+    <script type="text/javascript" src="/static_all/vue.js"></script>
+    <script src="/static_all/essence.js"></script>
+    <link rel="stylesheet" href="/static_all/perfect.css">
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="/static_all/js/kkpager.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static_all/style/kkpager_orange.css" />
+    <script src="/static_all/pagination/jquery.pagination.js"></script>
+    <title>自动化管理平台</title>
+    <style type="text/css">
+        [v-cloak] {
+            display: none !important;
+        }
+        #headers{
+            position: absolute;
+            display: block;
+            border: 1px solid slategray;
+            top: 352px;
+            left: 188px;
+            width: 400px;
+            border-radius: 3px;
+            background: #c7ddef;
+            z-index:999
+        }
+        #headers li{
+            padding-left: 10px;
+            font-size: 18px;
+            height: 30px;
+            line-height: 30px;
+        }
+        .header_select {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+        }
+        .method_select {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+        }
+        #method{
+            position: absolute;
+            display: block;
+            border: 1px solid slategray;
+            top: 302px;
+            left: 188px;
+            width: 400px;
+            border-radius: 3px;
+            background: #c7ddef;
+            z-index:999999
+        }
+
+        #method li{
+            padding-left: 10px;
+            font-size: 18px;
+            height: 30px;
+            line-height: 30px;
+        }
+        .execute {
+            background: #35c02e;
+            border: 0;
+            width: 50px;
+            height: 25px;
+            border-radius: 3px;
+            font-size: 14px;
+            color: white;
+            outline: none;
+        }
+        .execute i{
+            font-size: 14px;
+            color: white;
+        }
+        .edit_button {
+            background: #1ddeda;
+            border:none;
+            width: 50px;
+            height: 25px;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-left: 5px;
+            outline: none;
+            color: white;
+        }
+
+        .edit_button i{
+            font-size: 14px;
+            color: white;
+        }
+
+        .copy_button {
+            background: #d29c2c;
+            border:none;
+            width: 50px;
+            height: 25px;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-left: 5px;
+            outline: none;
+            color: white;
+        }
+        .copy_button i{
+            font-size: 14px;
+            color: white;
+        }
+        .delete_button {
+            background: #09a4d2;
+            border:none;
+            width: 50px;
+            height: 25px;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-left: 5px;
+            outline: none;
+            color: white;
+        }
+        .delete_button i{
+            font-size: 14px;
+            color: white;
+        }
+        td {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            height: 30px;
+        }
+        table{
+            table-layout:fixed;
+        }
+    </style>
+</head>
+<body>
+<div id="magece" v-cloak>
+    <div>
+        <div class="semove" id="setips">
+            <i class="iconfont icon-gantanhao"></i>
+            <div id="success_tip"></div>
+        </div>
+    </div>
+    <div>
+        <div class="semove ermove" id="ertips">
+            <i class="iconfont icon-shibai"></i>
+            <div id="fail_tip"></div>
+        </div>
+    </div>
+    <div class="side-bar">
+        <ul>
+            <li class="logo">
+                <img src="/static_all/mylogo.png" title="自动化管理平台">
+            </li>
+            <li class="aside-user">
+                <div>
+                    <img src="/static_all/logo.jpg" alt="">
+                </div>
+                <div>
+                    <span>{{ user_name }}</span>
+                    <input name="userid" type="hidden" id="userid" value="{{ user_id }}">
+                    <span class="iconfont icon-zaixian"></span>
+                    <span><a href="#">在线</a></span>
+                    <span class="iconfont icon-tuichu1"></span>
+                    <span><a href="/platform/logout/">注销</a></span>
+                </div>
+            </li>
+            <li class="menu">
+                <a href="/platform/index/">
+                    <span class="iconfont icon-shouye1"></span>
+                    <span>首&nbsp;&nbsp;页</span>
+                </a>
+            </li>
+            <li class="menu" @click="testmgt">
+                <a href="#">
+                    <span style="color: green" class="iconfont icon-guanli2"></span>
+                    <span>测试管理</span>
+                </a>
+            </li>
+            <ul v-show="testmanagement">
+                <li><a href="">用例管理</a></li>
+                <li><a href="">用例模块</a></li>
+                <li><a href="">协议模块</a></li>
+                <li><a href="">测试计划</a></li>
+                <li><a href="">公共参数</a></li>
+            </ul>
+            <li class="menu" @click="testext">
+                <a href="#">
+                    <span style="color: orange" class="iconfont icon-zhihang"></span>
+                    <span>测试执行</span>
+                </a>
+            </li>
+            <ul v-show="testexecution">
+                <li><a href="">任务调度</a></li>
+                <li><a href="">任务执行</a></li>
+                <li><a href="">用例明细</a></li>
+            </ul>
+            <li class="menu" @click="qualitymng">
+                <a href="#">
+                    <span style="color: blue" class="iconfont icon-zhiliangjiance"></span>
+                    <span>质量管理</span>
+                </a>
+            </li>
+            <ul v-show="quality">
+                <li><a href="">版本管理</a></li>
+                <li><a href="">生产事故</a></li>
+            </ul>
+            <li class="menu" @click="systemmng">
+                <a href="#">
+                    <span style="color: hotpink" class="iconfont icon-xitong-"></span>
+                    <span>系统管理</span>
+                </a>
+            </li>
+            <ul v-show="management">
+                <li><a href="">用户管理</a></li>
+                <li><a href="/platform/get_project/">角色管理</a></li>
+                <li><a href="">部门管理</a></li>
+                <li><a href="/platform/get_project/">项目管理</a></li>
+                <li><a href="">客户端管理</a></li>
+                <li><a href="">岗位管理</a></li>
+                <li><a href="">参数设置</a></li>
+                <li><a href="">通知公告</a></li>
+                <li><a href="">日志管理</a></li>
+            </ul>
+            <li class="menu" @click="timing">
+                <a href="#">
+                    <span style="color: greenyellow" class="iconfont icon-jiankong1"></span>
+                    <span>系统监控</span>
+                </a>
+            </li>
+            <ul v-show="monitor">
+                <li><a href="">在线用户</a></li>
+                <li><a href="">定时任务</a></li>
+            </ul>
+        </ul>
+    </div>
+    <div class="navigation">
+        <div><span class="iconfont icon-zhedie"></span></div>
+        <div>
+            <div>
+                <img src="/static_all/logo.jpg" alt="">
+            </div>
+            <a>
+                <span class="name" onclick="myinformation('mydropdown','.name')">{{ user_name }}
+                    <span class="iconfont icon-xiala1"></span>
+                </span>
+            </a>
+            <ul class="dropdowns" id="mydropdown">
+                <li onclick="myclose('user-info','block')" id="user-info"><i class="iconfont icon-gerenxinxi"></i> 个人信息
+                </li>
+                <li onclick="myclose('user-pwd','block')" id="user-pwd"><i class="iconfont icon-xiugaimima"></i> 修改密码
+                </li>
+                <li><a href="/platform/logout/"><i class="iconfont icon-tuichudenglu"></i> 退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="search">
+        <div>
+            <div>
+                <div>用例名称:</div>
+                <div>
+                    <input type="text" placeholder="请输入用例名称">
+                </div>
+            </div>
+            <div>
+                <div>用例编号:</div>
+                <div>
+                    <input type="text" placeholder="请输入用例编号">
+                </div>
+            </div>
+            <div>
+                <div>编辑者:</div>
+                <div>
+                    <input type="text" placeholder="请输入作者名称">
+                </div>
+            </div>
+            <div>
+                <div>项目名称:</div>
+                <div>
+                    <input type="text" placeholder="请输入项目名称">
+                </div>
+            </div>
+            <div>
+                <div>模块名称:</div>
+                <div>
+                    <input type="text" placeholder="请输入模块名称">
+                </div>
+            </div>
+            <div>
+                <div>用例类型:</div>
+                <div>
+                    <input type="text" placeholder="请输入用例类型">
+                </div>
+            </div>
+            <div>
+                <button>
+                    <i class="iconfont icon-sousuo1"></i>
+                    搜索
+                </button>
+                <button style="background: #a5a5a5">
+                    <i class="iconfont icon-zhongzhi"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div>
+            <div>
+                <button @click="handle" style="background: #00c000">
+                    <i class="iconfont icon-icon-test"></i>
+                    添加
+                </button>
+                <button style="background: #5bc0de">
+                    <i class="iconfont icon-piliangfuzhi"></i>
+                    批量复制
+                </button>
+                <button style="background: #c1e2b3">
+                    <i class="iconfont icon-export"></i>
+                    导入
+                </button>
+                <button style="background: #0ae2cf">
+                    <i class="iconfont icon-export1"></i>
+                    导出
+                </button>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 3%"><input type="checkbox"></th>
+                        <th style="width: 7%">ID</th>
+                        <th style="width: 10%">用例名称</th>
+                        <th style="width: 25%">参数</th>
+                        <th style="width: 20%">路径</th>
+                        <th style="width: 10%">请求方法</th>
+                        <th style="width: 20%">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="caseinfo of case_list" >
+                        <td><input type="checkbox"></td>
+                        <td v-text="caseinfo.id"></td>
+                        <td v-text="caseinfo.case_name" :title="caseinfo.case_name"></td>
+                        <td v-text="caseinfo.parameter" :title="caseinfo.parameter"></td>
+                        <td v-text="caseinfo.route" :title="caseinfo.route"></td>
+                        <td v-text="caseinfo.method" :title="caseinfo.method"></td>
+                        <td>
+                            <button class="execute" @click="execute_case_data(caseinfo)">
+                                <i class="iconfont icon-zhihang1"></i>
+                                   执行
+                                </button>
+                                <button class="edit_button" @click="edit_case(caseinfo)">
+                                    <i class="iconfont icon-xingzhuanggongnengtubiao-"></i>
+                                    编辑
+                                </button>
+                                <button class="copy_button" @click="copy_case_data(caseinfo)">
+                                    <i class="iconfont icon-fuzhi"></i>
+                                    复制
+                                </button>
+                                <button class="delete_button" @click="delete_case(caseinfo)">
+                                    <i class="iconfont icon-shanchu1"></i>
+                                   删除
+                                </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <div id="paging" class="Paging"></div>
+            </div>
+        </div>
+    </div>
+    <div class="case-popup" v-show="isShow">
+        <div>
+            <div>
+                <div style="padding-left: 15px;font-size: 18px">添加用例</div>
+                <div><i class="iconfont icon-guanbi1" id="close" @click="handle"></i></div>
+            </div>
+            <div class="case-input">
+                <div class="all-input position">
+                    <span>用例名称:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="500" type="text" type="text" v-model.lazy.trim="case_name" @focus="focus" @blur.prevent="changeCount('请输入用例名称',$event)" placeholder="请输入接口名称">
+                    <span :class="{tipsinfo: isshow}" v-text="tips"></span>
+                </div>
+
+                <div class="all-input position">
+                    <span>协议:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="20" type="text" v-model.lazy.trim="agreement" @focus="focus_agreement" @blur.prevent="change_agreement('请输入协议类型',$event)" placeholder="请输入服务协议">
+                    <span :class="{tipsinfo_: agreement_show}" v-text="agreement_tips"></span>
+                </div>
+                <div class="all-input position">
+                    <span>域名/IP:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="300" type="text" v-model.lazy.trim="domain_name" @focus="focus_domain" @blur.prevent="change_domain('请输入域名/IP',$event)" placeholder="请输入服务域名/IP">
+                    <span :class="{tipsinfo_: domain_show}" v-text="domain_tips"></span>
+                </div>
+                <div class="all-input position">
+                    <span>端口:</span>
+                    <input maxlength="50" type="text" v-model.lazy.trim="port" placeholder="请输入服务端口">
+                </div>
+                <div class="all-input position">
+                    <span>方法:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="30" type="text" @click="method_click" v-model.lazy.trim="method">
+                    <i class="iconfont icon-xiala1 method_select" @click="method_click"></i>
+                </div>
+                    <ul id="method" v-show="method_show" v-for="method in request_method">
+                        <li v-for="method in request_method" v-html="method" @click="select_method"></li>
+                    </ul >
+                <div class="all-input position">
+                    <span>头部:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="300" type="text"  v-model.lazy.trim="headers" @click="header_click">
+                    <i class="iconfont icon-xiala1 header_select"  @click="header_click"></i>
+                </div>
+                <ul id="headers" v-show="header_show">
+                    <li v-for="header in request_header" v-html="header" @click="select_header"></li>
+                </ul >
+                <span :class="{tipsinfo: isshow}" v-text="tips"></span>
+                <div class="all-input position">
+                    <span>路径:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="5000" type="text" v-model.lazy.trim="route" @focus="focus_route" @blur.prevent="change_route('请输入接口路径',$event)" placeholder="请输入接口地址">
+                    <span :class="{tipsinfo_: route_show}" v-text="route_tips"></span>
+                </div>
+                <div class="all-input position">
+                    <span>参数:</span>
+                    <textarea maxlength="20000" v-model.lazy.trim="parameter" placeholder="请输入接口参数"></textarea>
+                </div>
+            </div>
+            <div>
+                <button @click="handle" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+                <button @click="add_case">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="case-popup" v-show="edit_Show">
+        <div>
+            <div>
+                <div style="padding-left: 15px;font-size: 18px">编辑用例</div>
+                <div><i class="iconfont icon-guanbi1" id="close" @click="edit_case_show"></i></div>
+            </div>
+            <div class="case-input">
+                <div class="all-input position">
+                    <span>用例名称:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="500" type="text" type="text" v-model.lazy.trim="case_name" @focus="focus" @blur.prevent="changeCount('请输入用例名称',$event)" placeholder="请输入接口名称">
+                    <span :class="{tipsinfo: isshow}" v-text="tips"></span>
+                </div>
+
+                <div class="all-input position">
+                    <span>协议:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="20" type="text" v-model.lazy.trim="agreement" @focus="focus_agreement" @blur.prevent="change_agreement('请输入协议类型',$event)" placeholder="请输入服务协议">
+                    <span :class="{tipsinfo_: agreement_show}" v-text="agreement_tips"></span>
+                </div>
+                <div class="all-input position">
+                    <span>域名/IP:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="300" type="text" v-model.lazy.trim="domain_name" @focus="focus_domain" @blur.prevent="change_domain('请输入域名/IP',$event)" placeholder="请输入服务域名/IP">
+                    <span :class="{tipsinfo_: domain_show}" v-text="domain_tips"></span>
+                </div>
+                <div class="all-input position">
+                    <span>端口:</span>
+                    <input maxlength="50" type="text" v-model.lazy.trim="port" placeholder="请输入服务端口">
+                </div>
+                <div class="all-input position">
+                    <span>方法:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="30" type="text" @click="method_click" v-model.lazy.trim="method">
+                    <i class="iconfont icon-xiala1 method_select" @click="method_click"></i>
+                </div>
+                    <ul id="method" v-show="method_show" v-for="method in request_method">
+                        <li v-for="method in request_method" v-html="method" @click="select_method"></li>
+                    </ul >
+                <div class="all-input position">
+                    <span>头部:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="300" type="text"  v-model.lazy.trim="headers" @click="header_click">
+                    <i class="iconfont icon-xiala1 header_select"  @click="header_click"></i>
+                </div>
+                <ul id="headers" v-show="header_show">
+                    <li v-for="header in request_header" v-html="header" @click="select_header"></li>
+                </ul >
+                <span :class="{tipsinfo: isshow}" v-text="tips"></span>
+                <div class="all-input position">
+                    <span>路径:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input maxlength="5000" type="text" v-model.lazy.trim="route" @focus="focus_route" @blur.prevent="change_route('请输入接口路径',$event)" placeholder="请输入接口地址">
+                    <span :class="{tipsinfo_: route_show}" v-text="route_tips"></span>
+                </div>
+                <div class="all-input position">
+                    <span>参数:</span>
+                    <textarea maxlength="20000" v-model.lazy.trim="parameter" placeholder="请输入接口参数"></textarea>
+                </div>
+            </div>
+            <div>
+                <button @click="edit_case_show" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+                <button @click="updata_project">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="delete_pro" v-show="copy_Show">
+        <div class="spacing">
+            <div>
+                <div style="padding-left: 8px;font-size: 18px">复制用例</div>
+                <div style="padding-right: 8px;font-size: 18px"><i class="iconfont icon-guanbi1"  @click="copy_case_Show"></i></div>
+            </div>
+            <div>
+                <div i class="iconfont icon-tishi"></div>
+                <div>
+                    亲！确定需要复制该条用例吗&nbsp???...
+                </div>
+            </div>
+            <div>
+                <button @click="copy_case_Show" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+                <button @click="copy_case">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="delete_pro" v-show="delete_show">
+        <div class="spacing">
+            <div>
+                <div style="padding-left: 8px;font-size: 18px">删除用例</div>
+                <div style="padding-right: 8px;font-size: 18px"><i class="iconfont icon-guanbi1"  @click="delete_case_show"></i></div>
+            </div>
+            <div>
+                <div i class="iconfont icon-tishi"></div>
+                <div>
+                    确定删除这条用例吗?&nbsp&nbsp删除后将不能找回...
+                </div>
+            </div>
+            <div>
+                <button @click="delete_case_show" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+                <button @click="del_case">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="result_pro" v-show="result_show">
+        <div class="spacing">
+            <div>
+                <div style="padding-left: 8px;font-size: 18px">执行结果</div>
+                <div style="padding-right: 8px;font-size: 18px"><i class="iconfont icon-guanbi1"  @click="result_res_show"></i></div>
+            </div>
+            <div>
+                <textarea class="result_textarea" v-model.lazy.trim="result_rep"></textarea>
+            </div>
+            <div>
+                <button @click="result_res_show" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var case_info = all_list("/platform/case_list/", {"page": 1});
+    var vm = new Vue({
+        el: '#magece',
+        data: {
+            request_method: [
+                "POST", "GET","PUT","DELETE"
+            ],
+            request_header: [
+                "Json","Form_data"
+            ],
+            case_list: case_info.data,
+            case_page: case_info.sum_page,
+            isShow: false,
+            header_show: false,
+            result_show: false,
+            delete_show: false,
+            method_show: false,
+            testmanagement: false,
+            result_rep: '',
+            case_name: '',
+            case_id: '',
+            headers: '',
+            parameter: '',
+            route: '',
+            agreement: '',
+            domain_name: '',
+            port: '',
+            method: '',
+            testexecution: false,
+            edit_Show: false,
+            quality: false,
+            management: false,
+            monitor:false,
+            isshow: false,
+            casetepy: 'HTTP接口',
+            hiddentepy:false,
+            hiddenvalue: 1,
+            tips: "",
+            agreement_tips: '',
+            agreement_show: false,
+            domain_tips: '',
+            domain_show: false,
+            route_tips: '',
+            route_show: false,
+            show: false,
+            copy_Show: false,
+        },
+        mounted() {
+            //this.userid = document.getElementById('userid').value;
+           this.paging("/platform/case_list/", {})
+            //点击其他区域关闭下拉菜单
+
+        },
+        methods: {
+            handle: function() {
+                this.isShow = !this.isShow;
+                this.case_name = '';
+                this.agreement = '';
+                this.domain_name = '';
+                this.port = '';
+                this.route = '';
+                this.code = '';
+                this.parameter = '';
+                this.method = '';
+                this.headers = '';
+                this.tips = '';
+                this.agreement_tips = '';
+                this.domain_tips = '';
+                this.route_tips = '';
+            },
+            result_res_show: function(){
+                this.result_show = !this.result_show;
+            },
+            edit_case: function (name) {
+                this.edit_Show = !this.edit_Show;
+                this.case_name = name.case_name;
+                this.case_id = name.id;
+                this.method = name.method;
+                this.parameter = name.parameter;
+                this.headers = name.headers;
+                this.agreement = name.agreement;
+                this.domain_name = name.domain_name;
+                this.port = name.port;
+                this.route = name.route;
+                this.tips = '';
+             },
+            copy_case_Show: function(){
+                this.copy_Show = !this.copy_Show;
+            },
+            execute_case_data: function(name){
+                var that = this;
+                that.case_id = name.id;
+                $.ajax({
+                    url: "/platform/execute_case/",
+                    type: "post",
+                    header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    timeout: 3000,
+                    data: {"case_id": that.case_id},
+                    success: function (response) {
+                        if (response['code'] === 0) {
+                            console.log(response.data)
+                            that.result_rep = response.data;
+                            that.result_show = true;
+                        } else {
+                            that.result_show = false;
+                        }
+                    }
+                })
+
+            },
+
+            copy_case_data: function (name) {
+                this.copy_Show = !this.copy_Show;
+                this.case_id = name.id;
+            },
+            delete_case_show: function(){
+                this.delete_show = !this.delete_show;
+            },
+            edit_case_show: function(){
+                this.edit_Show = !this.edit_Show;
+            },
+            select_method: function(event){
+                this.method =  event.target.innerText;
+                this.method_show = false;
+            },
+            select_header: function(event){
+                this.headers =  event.target.innerText;
+                this.header_show = false;
+            },
+            testmgt: function() {
+                this.testmanagement = !this.testmanagement
+            },
+            header_click: function() {
+                this.header_show = !this.header_show
+            },
+            method_click: function() {
+                this.method_show = !this.method_show
+            },
+            testext: function() {
+                this.testexecution = !this.testexecution
+            },
+            qualitymng: function() {
+                this.quality = !this.quality
+            },
+            systemmng: function() {
+                this.management = !this.management
+            },
+            timing: function() {
+                this.monitor = !this.monitor
+            },
+            hiddencase: function() {
+                this.hiddentepy = !this.hiddentepy
+            },
+            select: function(event) {
+                this.casetepy =  event.target.innerText;
+                this.hiddenvalue = event.target.value;
+                this.hiddentepy = !this.hiddentepy
+            },
+            changeCount: function (info,event) {
+                this.case_name = event.target.value;
+                if (!this.case_name) {
+                    this.isshow = true;
+                    this.tips = info;
+                    return false
+                } else {
+                    this.isshow = false;
+                    this.tips = ''
+                }
+            },
+            focus_route: function () {
+                this.route_show = false;
+                this.route_tips = ''
+            },
+            change_route: function (info,event) {
+                this.route= event.target.value;
+                if (!this.route) {
+                    this.route_show = true;
+                    this.route_tips = info;
+                    return false
+                } else {
+                    this.route_show = false;
+                    this.route_tips= ''
+                }
+            },
+            focus_domain: function () {
+                this.domain_show = false;
+                this.domain_tips = ''
+            },
+            change_domain: function (info,event) {
+                this.domain_name = event.target.value;
+                if (!this.domain_name ) {
+                    this.domain_show = true;
+                    this.domain_tips = info;
+                    return false
+                } else {
+                    this.domain_show = false;
+                    this.domain_tips= ''
+                }
+            },
+            focus_agreement: function () {
+                this.agreement_show = false;
+                this.agreement_tips = ''
+            },
+            change_agreement: function (info,event) {
+                this.agreement = event.target.value;
+                if (!this.agreement) {
+                    this.agreement_show = true;
+                    this.agreement_tips = info;
+                    return false
+                } else {
+                    this.agreement_show = false;
+                    this.agreement_tips= ''
+                }
+            },
+            delete_case: function (name) {
+                this.delete_show = !this.delete_show;
+                this.case_id = name.id;
+             },
+            focus: function () {
+                this.isshow = false;
+                this.tips = ''
+            },
+            paging: function(url,json_data){
+                var that = this;
+                 $(function () {
+                     $('.Paging').pagination({
+                     count: 4,
+                     pageCount: that.case_page,
+                     coping:true,
+                     homePage:'首页',
+                     endPage:'末页',
+                     prevContent:'上页',
+                     nextContent:'下页',
+                     callback: function (index) {
+                         var case_url = url ? url : "/platform/case_list/";
+                         json_data['page'] = index.getCurrent();
+                         var caseinfo = all_list(case_url, json_data);
+                         that.case_list = caseinfo.data;
+                    }
+                });
+            });
+            },
+            search: function(){
+                var that = this;
+                if (that.search_name || that.create_user) {
+                    json_data = {"project_name": that.search_name, "create_user": that.create_user, "page": 1};
+                    $.ajax({
+                        url: "/platform/search_project/",
+                        type: "post",
+                        header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                        timeout: 3000,
+                        data: json_data,
+                        success: function (response) {
+                            if (response['code'] === 0) {
+                                that.project_list = response.data;
+                                that.project_page = response.sum_page;
+                                that.paging("/platform/search_project/",{"project_name": that.search_name, "create_user": that.create_user});
+                            }
+                        }
+                    })
+                }else {
+                    var project_info = all_list("/platform/project_list/", {"page": 1});
+                    that.project_list = project_info.data;
+                    that.project_page = project_info.sum_page;
+                    that.paging("/platform/project_list/", {});
+                }
+            },
+            edit_project: function (name) {
+                this.edit_show = !this.edit_show;
+                this.projce_name = name.project_name;
+                this.project_id = name.id;
+                this.tips = '';
+             },
+            reset: function(){
+                this.search_name = '';
+                this.create_user = '';
+            },
+            del_case: function () {
+                //对字符串去除前后空格
+                var that = this;
+                $.ajax({
+                    url: "/platform/delete_case/",
+                    type: "post",
+                    header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    timeout: 3000,
+                    data: {"case_id": that.case_id},
+                    success: function (response) {
+                        if (response['code'] === 0) {
+                            var caseinfo = all_list("/platform/case_list/", {"page": 1});
+                            that.case_list = caseinfo.data;
+                            that.case_page= caseinfo.sum_page;
+                            that.paging("/platform/case_list/", {});
+                            tips('setips', '删除成功');
+                            that.delete_show = false;
+                            that.paging("/platform/case_list/", {});
+                        } else {
+                            tips('ertips','删除失败');
+                            that.delete_show = false;
+                        }
+                    }
+                })
+
+            },
+            copy_case: function () {
+                //对字符串去除前后空格
+                var that = this;
+                $.ajax({
+                    url: "/platform/copy_case/",
+                    type: "post",
+                    header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    timeout: 3000,
+                    data: {"case_id": that.case_id},
+                    success: function (response) {
+                        if (response['code'] === 0) {
+                            var caseinfo = all_list("/platform/case_list/", {"page": 1});
+                            that.case_list = caseinfo.data;
+                            that.case_page= caseinfo.sum_page;
+                            that.paging("/platform/case_list/", {});
+                            tips('setips', '复制成功');
+                            that.copy_Show = false;
+                            that.paging("/platform/case_list/", {});
+                        } else {
+                            tips('ertips','复制失败');
+                            that.copy_Show = false;
+                        }
+                    }
+                })
+
+            },
+            updata_project: function () {
+                //对字符串去除前后空格
+                if (this.case_name.trim()) {
+                    var that = this;
+                    $.ajax({
+                        url: "/platform/update_case/",
+                        type: "post",
+                        header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                        timeout: 3000,
+                        data: {"case_id": that.case_id, "case_name": that.case_name,
+                              "agreement": that.agreement,"route": that.route, "domain_name": that.domain_name,
+                              "port": that.port,"method": that.method, "parameter": that.parameter,
+                              "headers": that.headers},
+                        success: function (response) {
+                            console.log(response);
+                            if (response['code'] === 0) {
+                                that.case_list = all_list("/platform/case_list/", {"page": 1}).data;
+                                tips('setips', '修改成功');
+                                that.edit_Show = false;
+                            } else {
+                                tips('ertips','修改失败');
+                                that.edit_Show = false;
+                            }
+                        }
+                    })
+                } else {
+                    this.tips = '请输入项目名称';
+                    this.isshow = true;
+                    return false
+                }
+            },
+            add_case: function () {
+                //对字符串去除前后空格
+                if (this.case_name.trim()) {
+                    var that = this;
+                    $.ajax({
+                        url: "/platform/add_case/",
+                        type: "post",
+                        header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                        timeout: 3000,
+                        data: {"case_name": that.case_name, "agreement": that.agreement,"route": that.route,
+                        "domain_name": that.domain_name,"port": that.port,"method": that.method,
+                        "parameter": that.parameter,"headers": that.headers},
+                        success: function (response) {
+                            if (response['code'] === 0) {
+                                var caseinfo = all_list("/platform/case_list/", {"page": 1});
+                                that.case_list = caseinfo.data;
+                                that.case_page = caseinfo.sum_page;
+                                that.paging("/platform/case_list/", {});
+                                tips('setips', '添加成功');
+                                that.isShow = false;
+
+                            } else {
+                                tips('ertips','添加失败');
+                                that.isShow = false;
+                            }
+                        }
+                    })
+                } else {
+                    this.tips = '请输入项目名称';
+                    this.isshow = true;
+                    return false
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

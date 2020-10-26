@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <link rel="icon" href="../image/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <script rel="stylesheet" href="../static/jquery-3.3.1.js"></script>
+    <script rel="stylesheet" href="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script rel="stylesheet" href="../static/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1688554_5enxed84clh.css">
+    <script type="text/javascript" src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="../static/essence.js"></script>
+    <link rel="stylesheet" href="../static/perfect.css">
+    <title>自动化管理平台</title>
+    <style type="text/css">
+     [v-cloak] {
+      display: none !important;
+     }
+    </style>
+</head>
+<body>
+<div id="department" v-cloak>
+    <div class="side-bar">
+        <ul>
+            <li class="logo">
+                <img src="../image/mylogo.png" title="自动化管理平台">
+            </li>
+            <li class="aside-user">
+                <div>
+                    <img src="../image/logo.jpg" alt="">
+                </div>
+                <div>
+                    <span>admin</span>
+                    <span class="iconfont icon-zaixian"></span>
+                    <span><a href="#">在线</a></span>
+                    <span class="iconfont icon-tuichu1"></span>
+                    <span><a href="/platform/logout/">注销</a></span>
+                </div>
+            </li>
+            <li class="menu">
+                <a href="/platform/index/">
+                    <span class="iconfont icon-shouye1"></span>
+                    <span>首&nbsp;&nbsp;页</span>
+                </a>
+            </li>
+            <li class="menu" @click="testmgt">
+                <a href="#">
+                    <span style="color: green" class="iconfont icon-guanli2"></span>
+                    <span>测试管理</span>
+                </a>
+            </li>
+            <ul v-show="testmanagement">
+                <li><a href="">用例管理</a></li>
+                <li><a href="">用例模块</a></li>
+                <li><a href="">协议模块</a></li>
+                <li><a href="">测试计划</a></li>
+                <li><a href="">公共参数</a></li>
+            </ul>
+            <li class="menu" @click="testext">
+                <a href="#">
+                    <span style="color: orange" class="iconfont icon-zhihang"></span>
+                    <span>测试执行</span>
+                </a>
+            </li>
+            <ul v-show="testexecution">
+                <li><a href="">任务调度</a></li>
+                <li><a href="">任务执行</a></li>
+                <li><a href="">用例明细</a></li>
+            </ul>
+            <li class="menu" @click="qualitymng">
+                <a href="#">
+                    <span style="color: blue" class="iconfont icon-zhiliangjiance"></span>
+                    <span>质量管理</span>
+                </a>
+            </li>
+            <ul v-show="quality">
+                <li><a href="">版本管理</a></li>
+                <li><a href="">生产事故</a></li>
+            </ul>
+            <li class="menu" @click="systemmng">
+                <a href="#">
+                    <span style="color: hotpink" class="iconfont icon-xitong-"></span>
+                    <span>系统管理</span>
+                </a>
+            </li>
+            <ul v-show="management">
+                <li><a href="">用户管理</a></li>
+                <li><a href="">角色管理</a></li>
+                <li><a href="">部门管理</a></li>
+                <li><a href="">项目管理</a></li>
+                <li><a href="">客户端管理</a></li>
+                <li><a href="">岗位管理</a></li>
+                <li><a href="">参数设置</a></li>
+                <li><a href="">通知公告</a></li>
+                <li><a href="">日志管理</a></li>
+            </ul>
+            <li class="menu" @click="timing">
+                <a href="#">
+                    <span style="color: greenyellow" class="iconfont icon-jiankong1"></span>
+                    <span >系统监控</span>
+                </a>
+            </li>
+            <ul v-show="monitor">
+                <li><a href="">在线用户</a></li>
+                <li><a href="">定时任务</a></li>
+            </ul>
+        </ul>
+    </div>
+    <div class="navigation">
+        <div><span class="iconfont icon-zhedie"></span></div>
+        <div>
+            <div>
+                <img src="../image/logo.jpg" alt="">
+            </div>
+            <a>
+                <span class="name" onclick="myinformation('mydropdown','.name')">admin
+                    <span class="iconfont icon-xiala1"></span>
+                </span>
+            </a>
+            <ul class="dropdowns" id="mydropdown">
+                <li onclick="myclose('user-info','block')" id="user-info"><i class="iconfont icon-gerenxinxi"></i> 个人信息</li>
+                <li onclick="myclose('user-pwd','block')" id="user-pwd"><i class="iconfont icon-xiugaimima"></i> 修改密码</li>
+                <li><a href="/platform/logout/"><i class="iconfont icon-tuichudenglu"></i> 退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="search">
+        <div>
+            <div>
+                <div>项目名称:</div>
+                <div>
+                    <input type="text" placeholder="请输入项目名称">
+                </div>
+            </div>
+            <div>
+                <div>项目标识:</div>
+                <div>
+                    <input type="text" placeholder="请输入项目标识">
+                </div>
+            </div>
+            <div>
+                <button>
+                    <i class="iconfont icon-sousuo1"></i>
+                    搜索
+                </button>
+                <button style="background: #a5a5a5">
+                    <i class="iconfont icon-zhongzhi"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div>
+            <div>
+                <button style="background: #00c000" @click="handle">
+                    <i class="iconfont icon-icon-test"></i>
+                    添加
+                </button>
+                <button style="background: #31b0d5">
+                    <i class="iconfont icon-xingzhuanggongnengtubiao-"></i>
+                    修改
+                </button>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="popup" v-show="isShow">
+        <div style="margin-bottom: 325px">
+            <div>
+                <div>添加部门</div>
+                <div @click="handle"><i class="iconfont icon-guanbi1"></i></div>
+            </div>
+            <div>
+                <div>
+                    <span>部门名称:
+                        <i class="iconfont icon-bitianxiang-"></i>
+                    </span>
+                    <input type="text" placeholder="请输入部门名称">
+                </div>
+                <div>
+                    <span>&nbsp&nbsp&nbsp负责人:
+                        <i class="iconfont icon-bitianxiang-"></i>
+                    </span>
+                    <input type="text" value="全部">
+                </div>
+            </div>
+            <div class="foot">
+                <button @click="handle" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+                <button>
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#department',
+        data: {
+            isShow: false,
+            testmanagement: false,
+            testexecution: false,
+            quality: false,
+            management: false,
+            monitor:false,
+
+        },
+        methods: {
+            handle: function() {
+                this.isShow = !this.isShow
+            },
+            testmgt: function() {
+                this.testmanagement = !this.testmanagement
+            },
+            testext: function() {
+                this.testexecution = !this.testexecution
+            },
+            qualitymng: function() {
+                this.quality = !this.quality
+            },
+            systemmng: function() {
+                this.management = !this.management
+            },
+            timing: function() {
+                this.monitor = !this.monitor
+            },
+        }
+    })
+</script>
+</body>
+</html>

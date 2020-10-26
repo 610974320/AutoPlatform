@@ -1,0 +1,70 @@
+base_url:
+  Yxy: http://test.cloud.app.scrm365.cn/#/ # 正式环境
+base_config:
+  pieces_page: 10                                 #一页展示多少条数据
+  max_page: 7                                     #页面最多展示多少条数据
+  log_level: 10                                   #输出日志级别
+  file_handler: True                             #文件输出日志，Fasle：不输入
+  steam_handler: false                          #控制台输入日志 Fasle：不输入
+  frequency: 0                                   #运行失败重跑次数
+  intervaltime: 0.1                                #失败间隔时间
+  interval: 1                                      #日志间隔，1表示每多少天新建一个日志文件
+  backupCount: 7                                  #日志保存最大天数
+  projectName: Yxy                           #项目名称
+  redis: False                                     #redis执行开关
+  mysql: True                                   #数据库连接类型开关
+  sqlite: False                                     #sqlite执行开关
+  host: localhost                                     #数据库主机ip
+  port: 3306                                          #主机sql端口
+  sql_name: autoplatform                                  #数据库名称
+  pwd: '123456'                                         #数据库连接密码
+  user: root                                  #数据库连接用户
+  redisip: 192.168.4.13                       #redis服务ip
+  redisport: 6379                             #redis服务端口
+  redisresult: redisre                        #redis表名
+  serverip: 192.168.4.13                      #服务器ip
+  serverport: 8080                            #服务器端口
+  threadrun: True                             #是否开启多线程运行
+  timing: 10                                  #定时任务间隔时间
+  company: 秒                                 #定时任务执行单位,时，分，秒
+  errorrate: 0.7                              #错误率
+  failrate: 0.8                               #失败率
+  eachtimes: 4                                #每多少次整体运行一次
+  basenumber: 3                               #运行总数,基数
+  runfrequency: 2                             #只运行失败和错误的达到多少次之后
+  againrun: 3                                 #再次整体运行多少次，再运行失败和错误的，循环
+  operatmode: 1                               #0表示每多少次（eachtimes）整体运行一次，其余（eachtimes-1）次只运行失败或者错误用例
+                                              #1表示在运行总数达到多少时（totalfrequency），错误率和失败率到达多少时（errorrate，failrate），
+                                              #只运行失败和错误用例（runfrequency）这么多次以后再整体运行（againrun）。。。
+                                              # 除此之外的数字表示一直全部执行
+email:
+  title: 门户接口自动化测试报告  # 邮件标题
+  desc: 用例执行情况       #邮件描述
+  smtp_sever: smtp.gouuse.cn # 邮箱smtp服务 如 smtp.163.com
+  send_person: chenjianbo@gouuse.cn    #邮件发送者邮箱
+  send_pwd: Cjbwt0107  # 邮件发送者邮箱密码
+  receive_person: [chenjianbo@gouuse.cn]      #邮件接收者
+sql:
+  create_table: CREATE TABLE IF NOT EXISTS response(id INTEGER primary key NOT NULL,funname varchar (100),modular varchar(100),address varchar(200),priority varchar(50),author varchar(50),describe varchar(500),step varchar(500),param varchar(1000),result varchar(30),usetime float ,summary nvarchar(10000),picture nvarchar(100000));
+  drop_database: DROP DATABASE %s;
+  search_response: SELECT * FROM response WHERE 1=1; # 获取结果 数据
+  search_desc: SELECT usetime FROM response ORDER BY  usetime desc; # 查询数据库排序/
+  search_max_time: select max(usetime) from response;
+  search_min_time: select min(usetime) from response;
+  insert_response: INSERT INTO response (funname,modular,address,priority,author,describe,step,param,result,usetime,summary,picture) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');
+  del_response: DELETE FROM response WHERE 1=1; # 清除统计结果数据
+  create_result: CREATE TABLE IF NOT EXISTS result(id INTEGER primary key NOT NULL,funname varchar (100),totalnumber int default 0,passnumber int default 0, errornumber int default 0,failnumber int default 0,passrate float default 0,errorrate float default 0,failrate float default 0,modular varchar (30));
+  insert_result: INSERT INTO result(funname,modular) VALUES ('%s','%s');
+  search_result: SELECT *  FROM result WHERE funname='%s';
+  update_result: update result set totalnumber=totalnumber+1, %s=%s+1 where funname='%s';
+  update_ratecl: update result set %s=%s where funname='%s';
+  del_result: DELETE FROM result WHERE 1=1;
+  search_all_result: SELECT modular,funname  FROM result where errorrate != 0 or failrate != 0;
+  search_max_result: select max(totalnumber) from result;
+  search_fail_error: SELECT modular,funname  FROM result where errorrate >%s or failrate >%s;
+
+report:
+  title: 接口自动化测试报告
+  edition: V1.0.0.1        #项目版本
+  science: 测试环境          #项目环境
+
