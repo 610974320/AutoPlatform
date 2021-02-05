@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <link rel="icon" href="/static_all/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/static_all/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static_all/jquery-3.3.1.js">
+    <link rel="stylesheet" href="/static_all/bootstrap/js/bootstrap.min.js">
+    <link rel="stylesheet" href="/static_all/bootstrap/js/bootstrap.js">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1688554_alt3mwevhmd.css">
+    <script type="text/javascript" src="https://unpkg.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/static_all/mycss.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+    <script src="/static_all/myjs.js"></script>
+    <title>自动化管理平台</title>
+    <style>
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        background: rgba(78, 198, 244, 0.03);
+
+    }
+
+    .left-div {
+        width: 240px;
+        height: 1000px;
+        background: rgba(78, 198, 244, 0.03);
+        overflow: hidden;
+        display: inline-block;
+        position: fixed;
+    }
+    .toast{
+        position:absolute;
+        left:50%;
+        transform: translateX(-50%);
+        width:100px;
+        height:30px;
+        background: rgba(0, 176, 0, 0.81);
+        line-height: 30px;
+        font-size: 18px;
+        text-align:center;
+        color:white;
+        display: none;
+        z-index: 9999;
+        border-radius: 3px;
+    }
+
+    .right-div {
+        width: calc(100% - 240px);
+        background: rgba(78, 198, 244, 0.03);
+        float: right;
+        display: block;
+        overflow: hidden;
+    }
+
+    .statistic {
+        border-top: 1px silver solid;
+        background: rgba(78, 171, 217, 0.15);
+    }
+
+    .statistic:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    .left-hand {
+        float: left;
+        margin-top: 15px;
+    }
+
+    .left-hand span {
+        display: block;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        color: white;
+        font-size: 35px;
+    }
+
+    .right-hand {
+        height: 70px;
+        margin-top: 4px;
+        float: right;
+        margin-right: -18px;
+    }
+
+    .right-hand > ul {
+        padding-top: 5px;
+        font-weight: bold;
+        color: white;
+        font-size: 18px;
+        text-align: left;
+        list-style: none;
+    }
+
+    .right-hand > ul > li {
+        padding-top: 5px;
+    }
+
+    .search {
+        position: relative;
+        left: 0;
+        height: 59px;
+        background: rgba(73, 133, 177, 0.03);
+        border-top: 1px silver solid;
+        border-bottom: 1px silver solid;
+    }
+    .search>div {
+        position: absolute;
+        right: 0;
+        margin-top: -37px;
+        margin-right: 20px;
+    }
+    .search button {
+        margin-left: 15px;
+    }
+    .search select {
+        width: 200px;
+        height: 40px;
+        border-radius: 2px;
+        border: 1px silver solid;
+        margin-top: 9px;
+        font-size: 16px;
+        outline: none;
+        padding-left: 15px;
+    }
+    .search select option {
+        display: block;
+        height: 40px;
+        font-size: 16px
+    }
+    .statistic > div {
+        margin-top: 20px;
+        margin-left: 30px;
+        height: 100px;
+    }
+
+    .statistic > div > div {
+        width: 90%;
+        height: 80%;
+        margin: 10px;
+        float: left;
+        margin-left: 2%
+    }
+
+    .total {
+        background: #00F7DE;
+    }
+
+    .total span {
+        background: rgba(11, 181, 153, 0.52);
+    }
+
+    .success {
+        background: #00c000;
+    }
+
+    .success span {
+        background: rgba(16, 157, 48, 0.57);
+    }
+
+    .fail {
+        background: #ed9d60;
+    }
+
+    .fail span {
+        background: rgba(190, 95, 28, 0.56);
+    }
+
+    .timeout {
+        background: rgba(0, 125, 219, 0.68);
+    }
+
+    .timeout span {
+        background: rgba(6, 72, 178, 0.46);
+    }
+
+    .history {
+        background: rgba(188, 104, 238, 0.89);
+    }
+
+    .history span {
+        background: rgba(158, 9, 173, 0.48);
+    }
+
+    .survey {
+        padding-top: 20px;
+        height: 400px;
+        background: rgba(242, 242, 242, 0.65);
+        padding-left: 30px;
+        border-bottom: 1px silver solid;
+
+    }
+    .sketch {
+        height: 150px;
+        padding-left: 30px;
+        width: calc(100% - 240px);
+        background: rgba(78, 198, 244, 0.03);
+        float: right;
+        clear: both;
+    }
+    .describe {
+        height: 50px;
+        width: calc(100% - 240px);
+        float: right;
+        background: bisque ;
+        font-size: 16px;
+        border-bottom: 1px silver solid;
+        line-height: 50px;
+        clear: both;
+        padding-left: 20px;
+        font-weight: bold;
+    }
+
+    .left-div li {
+        list-style: none;
+    }
+
+    .logo {
+        height: 72px;
+    }
+
+    .logo-img {
+        width: 260px;
+        height: 72px;
+
+    }
+
+    .left-div li:hover {
+        background: #e0e0e0;
+    }
+
+    .header {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-bottom: 25px;
+        margin-left: 10px;
+    }
+
+    .one {
+        display: inline-block;
+        padding-top: 30px;
+        padding-left: 1px;
+        font-size: 10px;
+    }
+
+    .two {
+        display: inline-block;
+        padding-left: 3px;
+        color: green;
+    }
+    .three {
+        display: inline-block;
+        padding-left: 3px;
+        color: red;
+    }
+
+    .menu {
+        height: 50px;
+    }
+
+    .menu a {
+        padding-top: 15px;
+        font-size: 18px;
+        display: inline-block;
+        padding-left: 10px;
+        text-decoration: none;
+        height: 50px;
+        width: 191px;
+        color: black;
+    }
+
+    .menu a:hover {
+        border-right: 3px rgba(70, 174, 93, 0.9) solid;
+    }
+
+    .left-div span a {
+        text-decoration: none;
+    }
+
+    .title-left {
+        float: left;
+        padding-left: 10px;
+        padding-top: 25px;
+        font-size: 20px;
+    }
+
+    .bordure {
+        height: 20px;
+        background: rgba(78, 171, 217, 0.15);
+    }
+
+    .title-right {
+        float: right;
+        width: 150px;
+        padding-right: 10px;
+        font-size: 18px;
+        vertical-align: middle;
+    }
+
+    .right-div img {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-top: -10px;
+    }
+
+    .name {
+        display: inline-block;
+        padding-top: 30px;
+        padding-left: 10px;
+    }
+
+    button {
+        border: none;
+        background-color: transparent;
+        outline: none;
+    }
+
+    .dropdowns {
+        margin-top: 3px;
+        margin-left: 20px;
+        background: rgba(109, 180, 90, 0.21);
+        display: none;
+        position: absolute;
+    }
+
+    .dropdowns a{
+        display: block;
+        width: 135px;
+        height: 40px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 40px;
+        text-decoration: none;
+        color: black;
+    }
+    .dropdowns li{
+        display: block;
+        width: 135px;
+        height: 40px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 40px;
+        text-decoration: none;
+        color: black;
+    }
+
+    .dropdowns a:hover {
+        background-color: rgba(59, 56, 46, 0.17);
+        color: white;
+    }
+    .dropdowns li:hover {
+        background-color: rgba(59, 56, 46, 0.17);
+        color: white;
+    }
+
+    .show {
+        display: block;
+    }
+
+    .title-right li {
+        list-style: none;
+    }
+    .sketch {
+        height: 140px;
+        font-size: 30px;
+        line-height: 130px;
+        text-align: center;
+        border-bottom: 1px silver solid;
+
+    }
+    .user-info {
+        position: absolute;
+        background: rgba(0,0,0,0.2);
+        width: calc(100% - 240px);
+        margin-left: 240px;
+        margin-top: 64px;
+        height: 100%;
+        display: none;
+    }
+    .content{
+        width: 800px;
+        height: 600px;
+        background: white;
+        margin: 85px auto;
+        border-radius: 5px;
+    }
+    .user-title {
+        display: flex;
+        height: 42px;
+        background: rgba(183, 183, 183, 0.69);
+        border-bottom: 2px solid rgba(152, 152, 152, 0.55);
+        justify-content: space-between;
+        border-radius: 5px 5px 0 0;
+    }
+    .user-title span:nth-child(1) {
+        line-height: 42px;
+        padding-left: 10px;
+        font-size: 16px;
+    }
+    .user-title span:nth-child(2) {
+        line-height: 42px;
+        padding-right: 10px;
+        font-size: 16px;
+    }
+    .content form {
+        width: 80%;
+        height: 60%;
+        margin: 0 auto;
+        margin-top: 50px;
+    }
+
+    .form-horizontal input:focus {
+        outline: none;
+        border: 1px rgba(65, 177, 75, 0.58) solid;
+    }
+    .side {
+        height: 55px;
+        border-top: 2px silver solid;
+        background: rgba(183, 183, 183, 0.69);
+        margin-top: 94px;
+        border-radius: 0 0 5px 5px;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .side div {
+        display: flex;
+        width: 130px;
+        height: 34px;
+        margin-top: 9px;
+        margin-right: 10px;
+        justify-content: space-between;
+    }
+    .content select option {
+        display: block;
+        height: 50px;
+    }
+    .project {
+        display: block;
+        height: 34px;
+        width: 100%;
+        outline: none;
+        border-radius: 5px;
+        border: 1px #bdbdbd solid;
+    }
+    .select span {
+        position: absolute;
+        top: 5px;
+        right: 26px;
+        text-align: center;
+        font-size: 20px;
+    }
+    li {
+        list-style: none;
+    }
+    .select ul{
+        list-style-type:none;
+        margin-top: 2px;
+        border: 1px silver solid;
+        width: 100%;
+        height: 150px;
+        border-radius: 5px;
+        overflow-y: scroll;
+    }
+    .select ul li {
+        padding-left: 10px;
+        line-height: 25px;
+        height: 25px;
+    }
+    .select ul li:hover {
+        color: white;
+        background: rgba(23, 167, 252, 0.9);
+    }
+    .projects {
+        display: none;
+    }
+    .myclose {
+        display: none;
+    }
+    .user-pwd {
+        position: absolute;
+        background: rgba(0,0,0,0.2);
+        width: calc(100% - 240px);
+        margin-left: 240px;
+        margin-top: 64px;
+        height: 100%;
+        display: none;
+    }
+    .height {
+        height: 500px;
+    }
+    .side-pwd {
+        height: 50px;
+        border-top: 2px silver solid;
+        background: rgba(183, 183, 183, 0.69);
+        margin-top: 58px;
+        border-radius: 0 0 5px 5px;
+        display: flex;
+        justify-content: flex-end;
+
+    }
+    .side-pwd div {
+        display: flex;
+        width: 130px;
+        height: 34px;
+        margin-top: 7px;
+        margin-right: 10px;
+        justify-content: space-between;
+    }
+    .mustfill {
+        position: absolute;
+        top: 3px;
+        left: 165px;
+        font-size: 20px;
+        color: rgba(235, 0, 0, 0.8);
+        }
+    .content form>div{
+        position: relative;
+    }
+    .tishi {
+        position: absolute;
+        left: 190px;
+        top: 34px;
+        font-size: 12px;
+        color: red;
+    }
+    .prohibit {
+        pointer-events:none;
+    }
+    .savefail {
+    background: rgba(235, 0, 0, 0.81);
+    }
+        .check {
+            position: absolute;
+            left: 20px;
+            top: 34px;
+            font-size: 12px;
+            color: red;
+        }
+         .checkpwd {
+            position: absolute;
+            left: 20px;
+            top: 34px;
+            font-size: 12px;
+            color: red;
+        }
+        .mngcs span{
+            padding-top: 12px;
+            font-size: 18px;
+            display: inline-block;
+            padding-left: 10px;
+            width: 191px;
+            height: 50px;
+            color: black;
+        }
+        .mngcs span:hover {
+            border-right: 3px rgba(70, 174, 93, 0.9) solid;
+        }
+        .mngcs ul li a:hover {
+             background: rgba(23, 167, 252, 0.42);
+             border-right: 3px rgba(70, 174, 93, 0.9) solid;
+        }
+        .case {
+            display: none;
+        }
+         .mngcs ul li a{
+             font-size: 14px;
+             display: block;
+             padding-top: 9px;
+             padding-left: 74px;
+             text-decoration: none;
+             height: 40px;
+             color: black;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="toast" id="savesucces">保存成功</div>
+<div class="toast savefail" id="savefail">保存失败</div>
+<div class="left-div am-offcanvas-content">
+    <li class="logo">
+        <img class="logo-img" src="/static_all/mylogo.png" title="自动化管理平台" alt="自动化管理平台">
+    </li>
+    <li style="height: 65px">
+        <img class="header" src="/static_all/logo.jpg" title="自动化管理平台">
+        <span class="one" id="username">{{ user_name }}</span>
+        <span class="iconfont icon-zaixian two"></span>
+        <span><a href="#">在线</a></span>
+        <span class="iconfont icon-tuichu1 three"></span>
+        <span><a href="/platform/logout/">注销</a></span>
+    </li>
+    <li class="menu">
+        <span style="font-size: 25px;padding-left: 20px;color: #00F7DE" class="iconfont icon-shouye1"></span>
+        <a href="/platform/index/">首&nbsp;&nbsp;页</a>
+    </li>
+    <li class="mngcs">
+        <i style="font-size: 25px;padding-left: 20px;color: green" class="iconfont icon-guanli2"></i>
+        <span id="case" onclick="show_hidden('hidden','case')">测试管理</span>
+        <ul class="case" id="hidden">
+            <li><a href="">用例管理</a></li>
+            <li><a href="/platform/get_managecase/">用例模块</a></li>
+            <li><a href="">协议模块</a></li>
+            <li><a href="">测试计划</a></li>
+            <li><a href="">公共参数</a></li>
+        </ul>
+    </li>
+    <li class="mngcs">
+        <i style="font-size: 25px;padding-left: 20px;color: orange" class="iconfont icon-zhihang"></i>
+        <span id="test" onclick="show_hidden('task','test')">测试执行</span>
+        <ul class="case" id="task">
+            <li><a href="">任务调度</a></li>
+            <li><a href="">任务执行</a></li>
+            <li><a href="">用例明细</a></li>
+        </ul>
+    </li>
+    <li class="mngcs">
+        <i style="font-size: 25px;padding-left: 20px;color: blue" class="iconfont icon-zhiliangjiance"></i>
+        <span id="quality" onclick="show_hidden('manage','quality')">质量管理</span>
+        <ul class="case" id="manage">
+            <li><a href="">版本管理</a></li>
+            <li><a href="">生产事故</a></li>
+        </ul>
+    </li>
+    <li class="mngcs">
+        <i style="font-size: 25px;padding-left: 20px;color: hotpink" class="iconfont icon-xitong-"></i>
+        <span id="system" onclick="show_hidden('management','system')">系统管理</span>
+        <ul class="case" id="management">
+            <li><a href="">用户管理</a></li>
+            <li><a href="/platform/get_project/">角色管理</a></li>
+            <li><a href="">部门管理</a></li>
+            <li><a href="/platform/get_project/">项目管理</a></li>
+            <li><a href="">客户端管理</a></li>
+            <li><a href="">岗位管理</a></li>
+            <li><a href="">参数设置</a></li>
+            <li><a href="">通知公告</a></li>
+            <li><a href="">日志管理</a></li>
+        </ul>
+    </li>
+    <li class="mngcs">
+        <i style="font-size: 25px;padding-left: 20px;color: greenyellow" class="iconfont icon-jiankong1"></i>
+        <span id="monitor" onclick="show_hidden('timing','monitor')">系统监控</span>
+        <ul class="case" id="timing">
+            <li><a href="">在线用户</a></li>
+            <li><a href="">定时任务</a></li>
+        </ul>
+    </li>
+    <script>
+        function all_list(url, json_data) {
+        $.ajax({
+            url: url,
+            type: "post",
+            async: false,
+            header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+            data: json_data,
+            timeout: 3000,
+            success: function (response){
+                data = response;
+            }
+        });
+
+        return data
+    }
+        function show_hidden(hiden,btn) {
+            var hidden = document.getElementById(hiden);
+            var id = document.getElementById(btn);
+            var flag = false;
+            id.onclick = function () {
+                if (!flag) {
+                    hidden.style.display = 'block';
+                    flag = true;
+                } else {
+                    hidden.style.display = 'none';
+                    flag = false;
+                }
+            }
+        }
+
+    </script>
+</div>
+<div class="right-div">
+    <div class="title-left">首页导航</div>
+    <div class="title-right">
+        <img src="/static_all/logo.jpg" alt="">
+        <button class="name" id='user_name' onclick="myinformation('mydropdown','.name')">
+            {{ user_name }}
+            <span class="caret" id="select"></span>
+        </button>
+        <ul class="dropdowns" id="mydropdown">
+            <li onclick="myclose('user-info','block')" id="user-info"><i class="iconfont icon-gerenxinxi"></i> 个人信息</li>
+            <li onclick="myclose('user-pwd','block')" id="user-pwd"><i class="iconfont icon-xiugaimima"></i> 修改密码</li>
+            <li><a href="/platform/logout/"><i class="iconfont icon-tuichudenglu"></i> 退出登录</a></li>
+        </ul>
+    </div>
+</div>
+<div class="right-div statistic">
+    <div class="col-sm-6 col-lg-3 total">
+        <div>
+            <div class="left-hand">
+                <span class="iconfont icon-qiche"></span>
+            </div>
+            <div class="right-hand">
+                <ul>
+                    <li>运行总数</li>
+                    <li>125453</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3 success">
+        <div>
+            <div class="left-hand">
+                <span class="iconfont icon-chenggong2"></span>
+            </div>
+            <div class="right-hand">
+                <ul>
+                    <li>成功总数</li>
+                    <li>125453</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3 fail">
+        <div>
+            <div class="left-hand">
+                <span class="iconfont icon-cuowushibaibukeyong"></span>
+            </div>
+            <div class="right-hand">
+                <ul>
+                    <li>失败总数</li>
+                    <li>125453</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3 timeout">
+        <div>
+            <div class="left-hand">
+                <span class="iconfont icon-chaoshibuzhanfei"></span>
+            </div>
+            <div class="right-hand">
+                <ul>
+                    <li>超时总数</li>
+                    <li>125453</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3 history">
+        <div>
+            <div class="left-hand">
+                <span class="iconfont icon-lishishujubukedianji"></span>
+            </div>
+            <div class="right-hand">
+                <ul>
+                    <li>历史总数</li>
+                    <li>125453</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="right-div bordure"></div>
+<div class="right-div search">
+    <select id="myid">
+        <option value="7">默认</option>
+        <option value="7">近7天</option>
+        <option value="15">近15天</option>
+        <option value="30">近30天</option>
+    </select>
+    <div>
+        <button type="button" class="btn btn-info">重置</button>
+        <button type="button" class="btn btn-primary" id="search">查询</button>
+    </div>
+</div>
+<div class="describe">用例执行概况统计分析:</div>
+<div class="right-div survey col-xs-12 col-xs-12 col-lg-12" id="container">
+    <script type="text/javascript">
+        statistics(500);
+    </script>
+</div>
+<div class="sketch">
+    版权所有 翻版必究
+</div>
+<script src="/static_all/jquery-3.3.1.js"></script>
+    <script>
+        $("#search").on("click",function () {
+        var value = $('#myid option:selected').val();
+        $.ajax({
+            url: "/platform/query/",
+            type: "post",
+            data: {"value": value,csrfmiddlewaretoken:'{{ csrf_token }}'},
+            success: function (arg) {
+                statistics(arg);
+            }
+        })
+    })
+    </script>
+<div class="user-info">
+    <div class="content">
+        <div class="user-title">
+            <span style="font-weight: bold">用户信息</span>
+            <span class="iconfont icon-guanbi2" id="close" onclick="myclose('user-info','none')"></span>
+        </div>
+        <form class="form-horizontal" id="user-info" novalidate="novalidate">
+            <input name="userId" type="hidden" id="userId" value="">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">登录名称：</label>
+                <i class="iconfont icon-must-fill2 mustfill"></i>
+				<div class="col-sm-8">
+					<input class="form-control" readonly="true" maxlength="5" autocomplete="off" type="text"  id="loginName" value="">
+				</div>
+                <span class="tishi" id="tishi"></span>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">部门名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" maxlength="20" type="text" autocomplete="off" id="deptName" value="">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" >邮箱：</label>
+				<div class="col-sm-8">
+					<input class="form-control" maxlength="20" autocomplete="off" type="email" id="email"  value="">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">手机：</label>
+				<div class="col-sm-8">
+					<input class="form-control" maxlength="11" type="text" id="phone"  value="">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">默认项目：</label>
+                <i class="iconfont icon-must-fill2 mustfill"></i>
+				<div class="col-sm-8 select" >
+                    <span class="iconfont icon-xiala"></span>
+                    <input class="form-control project" id="mypro" type="text" onclick="myinformation('projectes','.project')"  name="project" value="所有项目">
+                    <ul class="projects" id="projectes" >
+                        <li>所有项目</li>
+                        <li>营销云</li>
+                        <li>移动商城</li>
+                        <li>小名片</li>
+                        <li>营销云</li>
+                        <li>移动商城</li>
+                        <li>小名片</li>
+                        <li>营销云</li>
+                        <li>移动商城</li>
+                    </ul>
+				</div>
+			</div>
+            <div class="form-group">
+				<label class="col-sm-3 control-label">头像：</label>
+				<div class="col-sm-8">
+					<div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+                        <button class="btn btn-info fileinput-button" type="button">上传头像</button>
+                        <input type="file" accept="image/*" id="headerdata" onchange="loadFile(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+                    </div>
+                    <span id="filename" style="vertical-align: middle">未上传文件</span>
+				</div>
+                <script>
+                    function loadFile(file){
+                        $("#filename").html(file.name);
+                    }
+                </script>
+			</div>
+		</form>
+        <div class="side">
+            <div>
+                <button type="button" class="btn btn-primary" id="saveinfo" onclick="saveclose('user-info','none')">保存</button>
+                <button type="button" class="btn btn-info" onclick="myclose('user-info','none')">取消</button>
+            </div>
+            <script src="/static_all/jquery-3.3.1.js"></script>
+            <script>
+                 $.ajaxSetup({
+                    data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
+                })
+             </script>
+            <script>
+                $("#saveinfo").on("click",function () {
+                    var user_id = document.getElementById('userId').value;
+                    var loginName = document.getElementById('loginName').value;
+                    var deptName = document.getElementById('deptName').value;
+                    var email = document.getElementById('email').value;
+                    var phone = document.getElementById('phone').value;
+                    var mypro = document.getElementById('mypro').value;
+                    var header = document.getElementById('headerdata').value;
+                    $.ajax({
+                        url: "/platform/update_info/",
+                        type: "post",
+                        data: {
+                            'user_id': user_id,
+                            'user_name': loginName,
+                            'deptname': deptName,
+                            'email': email,
+                            'phone': phone,
+                            'project': mypro,
+                            'header': header,
+                            csrfmiddlewaretoken:'{{ csrf_token }}'
+                        },
+                        success: function (response) {
+                            if (response['code']===0){
+                                toast(50,0,'savesucces');
+                            }else {
+                                toast(50,0,'savefail');
+                            }
+
+                        }
+                    })
+                })
+            </script>
+        </div>
+        <script>
+            $("#projectes").on("click", "li", function(){
+            $("#mypro").val($(this).text());
+                });
+        </script>
+        <script src="/static_all/jquery-3.3.1.js"></script>
+        <script>
+            function toast(topEnd,top,id){
+                var toast  = $("#"+id);
+                toast.show();
+                var tops = top;
+                var timer = setInterval(function(){
+                    tops += 2;
+                    toast.css({"top": tops + "px",});
+                    if(tops>topEnd){
+                    clearInterval(timer);
+                    toast.hide()
+                 }
+                },16)
+            }
+            function saveclose(name,style) {
+                var btn = document.getElementById(name);
+                btn.style.display=style;
+            }
+        </script>
+        <script>
+            $("#user-info").on("click",function () {
+            var name = document.getElementById('username').innerHTML;
+            var loginName = document.getElementById('loginName');
+            var deptName = document.getElementById('deptName');
+            var email = document.getElementById('email');
+            var phone = document.getElementById('phone');
+            var mypro = document.getElementById('mypro');
+            var userId = document.getElementById('userId');
+            var csrf = document.cookie.split('; ')[0].split('=')[1];
+            $.ajax({
+                url: "/platform/user_info/",
+                type: "post",
+                contentType:'application/json',
+                data: JSON.stringify({"name": name}),
+                header: {'X-CSRFtoken': csrf},
+                {#header: {"X-CSRFToken": $.cookie("csrftoken")},#}
+                success: function (response) {
+                    loginName.value = name;
+                    email.value = response['data']['email'];
+                    phone.value = response['data']['phone'];
+                    deptName.value= response['data']['department'];
+                    mypro.value= response['data']['project'];
+                    userId.value= response['data']['user_id'];
+                }
+            })
+        })
+        </script>
+    </div>
+</div>
+<div class="user-pwd">
+    <div class="content height" id="users-pwd">
+        <div class="user-title">
+            <span style="font-weight: bold">修改密码</span>
+            <span class="iconfont icon-guanbi2" id="close" onclick="myclose('user-pwd','none')"></span>
+        </div>
+        <form class="form-horizontal m" novalidate="novalidate">
+            <input  type="hidden" id="userid" value="">
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">登录名称：</label>
+                <i class="iconfont icon-must-fill2 mustfill"></i>
+				<div class="col-sm-8">
+					<input class="form-control valid"  type="text" readonly="true" id="loginname" value="" aria-invalid="false">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">旧密码：</label>
+                <i class="iconfont icon-must-fill2 mustfill"></i>
+				<div class="col-sm-8">
+					<input class="form-control" maxlength="16"  type="password" name="oldpwd" id="oldpwd" value="" onblur="check()">
+                    <span class="check" id="check"></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">新密码：</label>
+                <i class="iconfont icon-must-fill2 mustfill"></i>
+				<div class="col-sm-8">
+					<input class="form-control" maxlength="16" onblur="mustfill('savepwd', 'checknew', 'newpwd')" type="password" name="newpwd" id="newpwd" value="">
+                    <span class="check" id="checknew"></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">再次确认：</label>
+                <i class="iconfont icon-must-fill2 mustfill"></i>
+				<div class="col-sm-8">
+					<input class="form-control" maxlength="16" type="password"  name="confirm" id="confirm" onblur="mypwd()" value="">
+					<span class="check" id="checkpwd"></span>
+				</div>
+			</div>
+		</form>
+        <div class="side-pwd">
+            <div>
+                <button type="button" class="btn btn-primary" id="savepwd">保存</button>
+                <button type="button" class="btn btn-info" onclick="myclose('user-pwd','none')">取消</button>
+            </div>
+        </div>
+        <script src="/static_all/jquery-3.3.1.js"></script>
+            <script>
+                  function pwdclose(name,style) {
+                      var checkpwd = document.getElementById('checkpwd');
+                      var newpwd = document.getElementById('newpwd').value;
+                      var oldpwd = document.getElementById('oldpwd').value;
+                      var confirm = document.getElementById('confirm').value;
+                      var savepwd = document.getElementById('savepwd');
+                      if (newpwd && oldpwd && confirm) {
+                          savepwd.classList.remove('prohibit');
+                          checkpwd.innerHTML = '';
+                          var btn = document.getElementById(name);
+                          btn.style.display = style;
+                      }else {
+                          savepwd.classList.add('prohibit');
+                          checkpwd.innerHTML = '请填写完整信息'
+                      }
+                  }
+                function mustfill(saveel,spanel,sourceel){
+                    var saveinfo = document.getElementById(saveel);
+                    var tishi = document.getElementById(spanel);
+                    var loginName = document.getElementById(sourceel);
+                    if (loginName.value===''){
+                        saveinfo.classList.add('prohibit');
+                        tishi.innerHTML = '此项为必填项！';
+                        return false
+                    }else {
+                        saveinfo.classList.remove('prohibit');
+                        tishi.innerHTML = '';
+                        return true
+                    }
+                }
+                function mypwd() {
+                    var new_pwd = document.getElementById('newpwd').value;
+                    var confirm = document.getElementById('confirm').value;
+                    var checkpwd = document.getElementById('checkpwd');
+                    var savepwd = document.getElementById('savepwd');
+                    if (mustfill('savepwd', 'checkpwd', 'confirm')) {
+                        if (new_pwd === confirm) {
+                            checkpwd.innerHTML = '';
+                            savepwd.classList.remove('prohibit')
+                        } else {
+                            checkpwd.innerHTML = '密码输入不一致,请重新输入';
+                            savepwd.classList.add('prohibit');
+                        }
+                    }
+                }
+                function check() {
+                    var savepwd = document.getElementById('savepwd');
+                    var name = document.getElementById('username').innerHTML;
+                    var loginname = document.getElementById('loginname');
+                    var oldpwd = document.getElementById('oldpwd').value;
+                    var check = document.getElementById('check');
+                    if (mustfill('savepwd', 'check', 'oldpwd')) {
+                        $.ajax({
+                            url: "/platform/user_pwd/",
+                            type: "get",
+                            data: {"name": name, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                            success: function (response) {
+                                if (response['code'] === 0) {
+                                    if (response['data']['pwd'] === oldpwd) {
+                                        check.innerText = '';
+                                        savepwd.classList.remove('prohibit')
+                                    } else {
+                                        check.classList.add('check');
+                                        check.innerHTML = '初始密码错误,请重新输入!';
+                                        savepwd.classList.add('prohibit');
+                                    }
+                                } else {
+                                    loginname.value = name
+                                }
+                            }
+                        })
+                    }
+                }
+                $("#savepwd").on("click",function () {
+                    var newpwd = document.getElementById('newpwd').value;
+                    var oldpwd = document.getElementById('oldpwd').value;
+                    var user_id = document.getElementById('userid').value;
+                    var confirm = document.getElementById('confirm').value;
+                    var savepwd = document.getElementById('savepwd');
+                    var btn = document.getElementsByClassName('user-pwd')[0];
+                    if (newpwd && oldpwd && confirm) {
+                          savepwd.classList.remove('prohibit');
+                          checkpwd.innerHTML = '';
+                          $.ajax({
+                                url: "/platform/save_pwd/",
+                                type: "post",
+                                data: {
+                                    'user_id': user_id,
+                                    'confirm': confirm,
+                                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                                },
+                                success: function (response) {
+                                    if (response['code'] === 0) {
+                                        savepwd.classList.remove('prohibit');
+                                        checkpwd.innerHTML = '';
+                                        btn.style.display = 'none';
+                                        toast(50, 0, 'savesucces');
+                                        setInterval('window.location.reload()',150);
+                                    } else {
+                                        toast(50, 0, 'savefail');
+                                    }
+                                }
+                            })
+                    }else {
+                          savepwd.classList.add('prohibit');
+                          checkpwd.innerHTML = '请填写完整信息'
+                    }
+                });
+            function toast(topEnd,top,id){
+                var toast  = $("#"+id);
+                toast.show();
+                var tops = top;
+                var timer = setInterval(function(){
+                    tops += 2;
+                    toast.css({"top": tops + "px",});
+                    if(tops>topEnd){
+                    clearInterval(timer);
+                    toast.hide()
+                 }
+                },16)
+            }
+            function saveclose(name,style) {
+                var btn = document.getElementsByClassName(name)[0];
+                btn.style.display=style;
+            }
+
+            $("#user-pwd").on("click",function () {
+            var name = document.getElementById('username').innerHTML;
+            var loginname = document.getElementById('loginname');
+            var userid = document.getElementById('userid');
+            $.ajax({
+                url: "/platform/user_pwd/",
+                type: "get",
+                data: {"name": name, csrfmiddlewaretoken:'{{ csrf_token }}'},
+                success: function (response) {
+                    if(response['code']===0){
+                        loginname.value = response['data']['user_name'];
+                        userid.value = response['data']['user_id']
+                    }else {
+                        loginname.value = name
+                    }
+                }
+            })
+        })
+        </script>
+    </div>
+</div>
+</body>
+</html>

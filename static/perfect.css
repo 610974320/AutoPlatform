@@ -1,0 +1,946 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+/*body样式*/
+body {
+    height: 100%;
+    width: 100%;
+    background: rgba(242, 242, 242, 0.98);
+}
+
+
+/*侧导航栏样式*/
+.side-bar {
+    width: 240px;
+    height: 2000px;
+    background: gainsboro;
+    overflow-y: hidden;
+    position: fixed;
+}
+/*logo*/
+.logo img{
+    display: inline-block;
+    height: 72px;
+    width: 100%;
+    overflow-x: hidden;
+    padding-left: 15px;
+}
+/*用户信息栏目*/
+.aside-user {
+    height: 60px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+/*用户头像*/
+.aside-user div:nth-child(1) img {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    background: #dff0d8;
+    border-radius: 50%;
+}
+/*用户名称，在线，退出*/
+.aside-user div:nth-child(2) {
+    width: calc(100% - 70px);
+    margin-left: 10px;
+    margin-top: 30px;
+}
+/*用户名*/
+.aside-user div:nth-child(2) span:nth-child(1){
+    margin-left: -5px;
+}
+/*在线样式*/
+.aside-user div:nth-child(2) span:nth-child(2){
+    margin-left: 4px;
+    color: green;
+}
+/*退出样式*/
+.aside-user div:nth-child(2) span:nth-child(4){
+    margin-left: 4px;
+    color: red;
+
+}
+/*取消a标签默认样式*/
+ .side-bar a{
+     text-decoration: none;
+     color: black;
+ }
+ /*菜单样式*/
+.menu a{
+    display: block;
+    height: 50px;
+    line-height: 50px;
+}
+/*目录icon样式*/
+.menu span:nth-child(1) {
+    font-size: 25px;
+    padding-left: 20px;
+    color: #2aabd2;
+}
+/*目录样式*/
+.menu span:nth-child(2) {
+    font-size: 16px;
+    padding-left: 10px;
+}
+/*子菜单样式*/
+.side-bar>ul ul li {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 60px;
+}
+/*ul背景颜色*/
+.side-bar>ul ul{
+    background: #c1e2b3;
+}
+/*鼠标经过样式*/
+.side-bar>ul ul li:hover {
+    background: #dff0d8;
+    border-right: 3px green solid;
+}
+
+/*鼠标经过样式*/
+.side-bar>ul>li:hover {
+    background: #dff0d8;
+    border-right: 3px green solid;
+}
+/*鼠标经过子菜单样式*/
+.menu li:hover {
+    border-right: 3px rgba(10, 146, 245, 0.54) solid;
+    background: rgba(10, 146, 245, 0.54);
+}
+/*导航栏样式*/
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
+    width: calc(100% - 240px);
+    background: #b6ecf3;
+    margin-left: 240px;
+    z-index: 99999;
+}
+/*影藏侧栏样式*/
+.navigation div:nth-child(1) span{
+    margin-left: 20px;
+    font-size: 25px;
+    color: white;
+    font-weight: bolder;
+}
+/*头像导航*/
+.navigation div:nth-child(2){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*头像*/
+.navigation div:nth-child(2) div:nth-child(1) img{
+    width: 45px;
+    height: 45px;
+    margin-right: 8px;
+    background: #2aabd2;
+    border-radius: 50%;
+}
+/*下拉图标*/
+.navigation div:nth-child(2) a span:nth-child(2){
+    font-size: 18px;
+    padding-right: 15px;
+}
+/*子绝父相*/
+.navigation div:nth-child(2){
+    position: relative;
+}
+/*用户名称*/
+.navigation div:nth-child(2) a span:nth-child(1){
+    font-size: 16px;
+    padding-right: 4px;
+}
+/*取消a标签样式*/
+.navigation a {
+    width: 100px;
+    height: 50px;
+    padding-top: 13px;
+    text-decoration: none;
+    color: black;
+    margin-top: 20px;
+}
+/*用户退出登录，修改信息样式*/
+.dropdowns {
+    margin-top: 88px;
+    margin-left: 20px;
+    background: white;
+    position: absolute;
+    z-index: 99999999;
+    top: -16px;
+    display: none;
+}
+/*取消所有li标签的默认样式*/
+li {
+    list-style: none;
+}
+/*修改用户信息，用户密码，退出登录样式*/
+.dropdowns li {
+    padding-left: 20px;
+    font-size: 16px;
+    height: 35px;
+    width: 160px;
+    line-height: 35px;
+}
+/*鼠标经过样式*/
+.dropdowns li:hover {
+    background: #b6ecf3;
+}
+/*隐藏显示*/
+.show {
+    display: block;
+}
+/*搜索输入框通用样式*/
+.search {
+    margin-top: 30px;
+    margin-left: 240px;
+    width: calc(100% - 240px);
+}
+/*各input框样式*/
+.search>div{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 0 20px;
+    background: rgba(146, 146, 146, 0.28);
+    border-radius: 6px;
+}
+/*各输入框文字和ipnt样式*/
+.search>div>div{
+    display: flex;
+    width: 345px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+/*设置div样式*/
+.search>div>div{
+    display: flex;
+    align-items: center;
+    width: 345px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.search>div>div{
+    display: flex;
+    height: 30px;
+    width: 345px;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+/*文字框样式*/
+.search>div>div div:nth-child(1){
+    line-height: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+/*输入框样式*/
+.search>div>div div:nth-child(2) input{
+    display: inline-block;
+    line-height: 30px;
+    height: 30px;
+    width: 260px;
+    outline: none;
+    border-radius: 3px;
+    border: 1px gainsboro solid;
+    padding-left: 10px;
+}
+/*查询，重置样式*/
+.search button{
+    margin-left: 20px;
+    border: 1px;
+    height: 30px;
+    width: 60px;
+    background: #2aabd2;
+    outline: none;
+    border-radius: 3px;
+    color: white;
+}
+/*查询，重置icon样式*/
+.search button i{
+    font-size: 12px;
+    color: white;
+}
+/*内容样式*/
+.content {
+    margin-top: 30px;
+    margin-left: 240px;
+    width: calc(100% - 240px);
+}
+#projectinfow td {
+    height: 30px;
+    line-height: 30px;
+}
+
+#projectinfow li{
+    display: inline-block;
+    cursor: pointer;
+}
+
+.edit{
+    color: rgba(40, 59, 249, 0.91);
+}
+
+.delete{
+    color: red;
+}
+/*各input框样式*/
+.content>div{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin: 0 20px;
+    background: white;
+    border-radius: 6px;
+}
+
+.content>div>div:nth-child(1){
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+/*按钮样式*/
+.content>div>div:nth-child(1) button{
+    outline: none;
+    background: #dff0d8;
+    margin-left: 10px;
+    border: 1px;
+    height: 30px;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-radius: 3px;
+}
+/*列表样式*/
+.content table {
+    margin-top: 20px;
+}
+/*弹窗样式*/
+.popup {
+    position: absolute;
+    background: rgba(0,0,0,0.3);
+    width: calc(100% - 240px);
+    height: calc(100% - 72px);;
+    left: 240px;
+    top: 72px;
+}
+/*弹窗里面的内容div样式*/
+.popup>div {
+    position: relative;
+    width: 650px;
+    background: white;
+    margin: 0 auto;
+    margin-top: 30px;
+    border-radius: 5px;
+    margin-bottom: 217px;
+}
+
+.spacing {
+    margin-top: 160px !important;
+}
+/*弹窗标题样式*/
+.popup>div>div:nth-child(1){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background: #cccccc;
+    border-radius: 5px 5px 0 0;
+}
+/*关闭按钮样式*/
+.popup>div>div:nth-child(1)>div:nth-child(2){
+    margin-right: 15px;
+    font-weight: bold;
+}
+/*底部div样式*/
+.popup>div>div:nth-child(3){
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: #cccccc;
+    margin-top: 100px;
+    height: 50px;
+    border-radius: 0 0 5px 5px;
+}
+/*按钮样式*/
+.popup>div>div:nth-child(3) button{
+    width: 70px;
+    height: 30px;
+    background: rgba(14, 94, 244, 0.76);
+    outline: none;
+    border: 1px;
+    margin-right: 15px;
+    border-radius: 3px;
+    font-size: 18px;
+    line-height: 30px;
+    color: white;
+}
+/*输入内容输入框样式*/
+.input-content{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+/*输入框间距*/
+.single-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.all-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.all-input i {
+    position: absolute;
+}
+
+/*内容div中的文字盒子样式*/
+.input-content span{
+    text-align: right;
+    margin-right: 16px;
+}
+/*绝对定位设置相对位置*/
+.position {
+    position: relative;
+}
+
+/*内容div中的input框样式*/
+.input-content input{
+    height: 30px;
+    border-radius: 3px;
+    outline: none;
+    border: 1px slategray solid;
+    width: 300px;
+    padding-left: 10px;
+}
+/*内容div中的必填项标识样式*/
+.mustfill {
+    position: absolute;
+    top: 4px;
+    left: 62px;
+    font-size: 16px;
+    color: red;
+}
+/*文字与icon包裹样式*/
+.input-content div:nth-child(2){
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*icon位置*/
+.input-content div:nth-child(2) i{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: black;
+}
+/*提示信息盒子样式*/
+.tipsinfo {
+    position: absolute;
+    color: red;
+    font-size: 10px;
+    top: 102px;
+    left: 188px;
+}
+.tipsinfo_ {
+    position: absolute;
+    color: red;
+    font-size: 10px;
+    top: 33px;
+    left: 75px;
+}
+
+
+/*底部盒子间距*/
+.foot {
+    margin-top: 218px !important;
+}
+/*下拉框样式*/
+.select {
+    position: absolute;
+    border: 1px silver solid;
+    width: 300px;
+    height: 92px;
+    top: 202px;
+    left: 212px;
+    border-radius: 3px;
+}
+/*下拉li样式*/
+.select li {
+    height: 30px;
+    line-height: 30px;
+    padding-left: 15px;
+}
+/*下拉鼠标经过样式*/
+.select li:hover {
+    background: #dff0d8;
+}
+
+/*下拉选项样式*/
+.swal-icon--success__ring {
+    width: 80px;
+    height: 80px;
+    border: 4px solid hsla(125, 73%, 50%, 0.2);
+    border-radius: 50%;
+    box-sizing: content-box;
+    position: absolute;
+    left: 200px;
+    top: 24px;
+}
+/*移动提示框样式*/
+.semove {
+    display: none;
+    position: absolute;
+    width: 120px;
+    height: 35px;
+    background: rgba(80, 185, 101, 1);
+    border: 1px green solid;
+    border-radius: 5px;
+    text-align: right;
+    padding-right: 24px;
+    line-height: 35px;
+    -webkit-animation: 1s semove;
+    animation-fill-mode: forwards;
+    color: white;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/*icon样式*/
+.semove i {
+    position: absolute;
+    left: 15px;
+}
+
+/*移动其实位置样式*/
+@-webkit-keyframes semove{
+    0%{
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+    }
+    100%{
+        left: 50%;
+        transform: translateX(-50%);
+        top: 150px;
+        display: none;
+    }
+}
+
+@-webkit-keyframes ermove{
+    0%{
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+    }
+    100%{
+        left: 50%;
+        transform: translateX(-50%);
+        top: 150px;
+        display: none;
+    }
+}
+
+#edit {
+    text-decoration: none;
+    color: blue;
+}
+
+#delete {
+    text-decoration: none;
+    color: red;
+}
+
+.Paging {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.Paging li{
+    width: 33px;
+    height: 33px;
+    text-align: center;
+    line-height: 33px;
+    margin-left: 10px;
+    border: 1px #cccccc solid;
+    cursor: pointer;
+}
+.Paging span{
+    cursor: pointer;
+}
+.Paging li:nth-child(1){
+    width: 45px;
+    border-radius: 5px 0 0 5px;
+    border: 1px #cccccc solid;
+
+}
+
+.Paging li:last-child{
+    border-radius: 0 5px 5px 0;
+    width: 45px;
+    border: 1px #cccccc solid;
+}
+.active {
+    width: 33px;
+    height: 33px;
+    text-align: center;
+    line-height: 33px;
+    margin-left: 10px;
+    border: 1px #cccccc solid;
+    background: #5bc0de;
+}
+
+.background {
+    background: #337ab7;
+}
+
+#pages {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    color: red;
+}
+
+.edit_popup {
+    position: absolute;
+    background: rgba(0,0,0,0.3);
+    width: calc(100% - 240px);
+    height: calc(100% - 72px);;
+    left: 240px;
+    top: 72px;
+}
+/*弹窗里面的内容div样式*/
+.edit_popup>div {
+    position: relative;
+    width: 650px;
+    background: white;
+    margin: 0 auto;
+    margin-top: 30px;
+    border-radius: 5px;
+    margin-bottom: 217px;
+}
+
+/*弹窗标题样式*/
+.edit_popup>div>div:nth-child(1){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background: #cccccc;
+    border-radius: 5px 5px 0 0;
+}
+/*关闭按钮样式*/
+.edit_popup>div>div:nth-child(1)>div:nth-child(2){
+    margin-right: 15px;
+    font-weight: bold;
+}
+/*底部div样式*/
+.edit_popup>div>div:nth-child(3){
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: #cccccc;
+    margin-top: 100px;
+    height: 50px;
+    border-radius: 0 0 5px 5px;
+}
+/*按钮样式*/
+.edit_popup>div>div:nth-child(3) button{
+    width: 70px;
+    height: 30px;
+    background: rgba(14, 94, 244, 0.76);
+    outline: none;
+    border: 1px;
+    margin-right: 15px;
+    border-radius: 3px;
+    font-size: 18px;
+    line-height: 30px;
+    color: white;
+}
+
+.delete_pro{
+    position: absolute;
+    background: rgba(0,0,0,0.3);
+    width: calc(100% - 240px);
+    height: calc(100% - 72px);;
+    left: 240px;
+    top: 72px;
+}
+.delete_pro>div {
+    position: relative;
+    width: 450px;
+    background: white;
+    margin: 0 auto;
+    top: 15%;
+    border-radius: 5px;
+    margin-bottom: 217px;
+}
+.delete_pro>div>div:nth-child(1){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 450px;
+    height: 40px;
+}
+.delete_pro>div>div:nth-child(1){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 450px;
+    height: 40px;
+    border-radius: 5px 5px 0 0;
+}
+
+.delete_pro>div>div:nth-child(2){
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+
+}
+.delete_pro>div>div:nth-child(2)>div:nth-child(1){
+    padding-left: 40px;
+    padding-right: 6px;
+    font-size: 24px;
+    color: #df9e22;
+}
+
+.delete_pro>div>div:nth-child(2)>div:nth-child(2){
+    font-size: 16px;
+}
+
+.delete_pro>div>div:nth-child(3){
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10px;
+    height: 50px;
+    border-radius: 0 0 5px 5px;
+}
+
+.delete_pro>div>div:nth-child(3) button{
+    width: 70px;
+    height: 30px;
+    background: rgba(14, 94, 244, 0.76);
+    outline: none;
+    border: 1px;
+    margin-right: 15px;
+    border-radius: 3px;
+    font-size: 18px;
+    line-height: 30px;
+    color: white;
+}
+
+/*用例新增弹窗*/
+.case-popup {
+    position: absolute;
+    background: rgba(0,0,0,0.3);
+    width: calc(100% - 240px);
+    height: calc(100% - 72px);;
+    left: 240px;
+    top: 72px;
+}
+/*新增用例*/
+.case-popup>div {
+    position: relative;
+    width: 800px;
+    background: white;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+/*弹窗标题样式*/
+.case-popup>div>div:nth-child(1){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background: #cccccc;
+    border-radius: 5px 5px 0 0;
+}
+
+/*关闭按钮样式*/
+.case-popup>div>div:nth-child(1)>div:nth-child(2){
+    margin-right: 15px;
+    font-weight: bold;
+}
+/*底部div样式*/
+.case-popup>div>div:nth-child(3){
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: #cccccc;
+    margin-top: 100px;
+    height: 50px;
+    border-radius: 0 0 5px 5px;
+}
+/*按钮样式*/
+.case-popup>div>div:nth-child(3) button{
+    width: 70px;
+    height: 30px;
+    background: rgba(14, 94, 244, 0.76);
+    outline: none;
+    border: 1px;
+    margin-right: 15px;
+    border-radius: 3px;
+    font-size: 18px;
+    line-height: 30px;
+    color: white;
+}
+.case-input{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+.case-input div:nth-child(2){
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*icon位置*/
+.case-input>div span:nth-child(1){
+    text-align: right;
+    margin-right: 12px;
+    width: 63px;
+}
+
+/*内容div中的input框样式*/
+.case-input input{
+    height: 30px;
+    border-radius: 3px;
+    outline: none;
+    border: 1px slategray solid;
+    width: 500px;
+    padding-left: 10px;
+}
+
+textarea {
+    border-radius: 3px;
+    outline: none;
+    border: 1px slategray solid;
+    width: 500px;
+    padding-left: 10px;
+    height: 200px;
+    max-width: 500px;
+    min-width: 500px;
+    min-height: 30px;
+}
+
+.execute {
+    background: #5bc0de;
+}
+
+.result_pro{
+    position: absolute;
+    background: rgba(0,0,0,0.3);
+    width: calc(100% - 240px);
+    height: calc(100% - 72px);;
+    left: 240px;
+    top: 72px;
+}
+.result_pro>div {
+    position: relative;
+    width: 800px;
+    background: white;
+    margin: 0 auto;
+    top: -100px;
+    border-radius: 5px;
+    margin-bottom: 217px;
+}
+.result_pro>div>div:nth-child(1){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 800px;
+    height: 40px;
+}
+.result_pro>div>div:nth-child(1){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 800px;
+    height: 40px;
+    border-radius: 5px 5px 0 0;
+}
+
+.result_pro>div>div:nth-child(2){
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+
+}
+.result_pro>div>div:nth-child(2)>div:nth-child(1){
+    padding-left: 40px;
+    padding-right: 6px;
+    font-size: 24px;
+    color: #df9e22;
+}
+
+.result_pro>div>div:nth-child(2)>div:nth-child(2){
+    font-size: 16px;
+}
+
+.result_pro>div>div:nth-child(3){
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10px;
+    height: 50px;
+    border-radius: 0 0 5px 5px;
+}
+
+.result_pro>div>div:nth-child(3) button{
+    width: 70px;
+    height: 30px;
+    background: rgba(14, 94, 244, 0.76);
+    outline: none;
+    border: 1px;
+    margin-right: 360px;
+    border-radius: 3px;
+    font-size: 18px;
+    line-height: 30px;
+    color: white;
+}
+
+.result_textarea {
+    outline: none;
+    border: 1px slategray solid;
+    width: 800px;
+    padding-left: 5px;
+    height: 200px;
+    max-width: 800px;
+    min-width: 800px;
+    min-height: 550px;
+}
+
+.tips_info{
+    position: absolute;
+    color: red;
+    font-size: 10px;
+    top: 102px;
+    left: 212px;
+}

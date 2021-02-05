@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <link rel="icon" href="/static_all/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/static_all/bootstrap/css/bootstrap.min.css">
+    <script rel="stylesheet" href="/static_all/jquery-3.3.1.js"></script>
+    <script rel="stylesheet" href="/static_all/bootstrap/js/bootstrap.min.js"></script>
+    <script rel="stylesheet" href="/static_all/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1688554_esvep8fpsxo.css">
+    <script type="text/javascript" src="/static_all/vue.js"></script>
+    <script src="/static_all/essence.js"></script>
+    <link rel="stylesheet" href="/static_all/perfect.css">
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="/static_all/js/kkpager.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static_all/style/kkpager_orange.css" />
+    <script src="/static_all/pagination/jquery.pagination.js"></script>
+
+    <title>自动化管理平台</title>
+    <style type="text/css">
+        [v-cloak] {
+            display: none !important;
+        }
+
+    </style>
+</head>
+<body>
+<div id="project" v-cloak>
+    <div>
+        <div class="semove" id="setips">
+            <i class="iconfont icon-gantanhao"></i>
+            <div id="success_tip"></div>
+        </div>
+    </div>
+    <div>
+        <div class="semove ermove" id="ertips">
+            <i class="iconfont icon-shibai"></i>
+            <div id="fail_tip"></div>
+        </div>
+    </div>
+    <div class="side-bar">
+        <ul>
+            <li class="logo">
+                <img src="/static_all/mylogo.png" title="自动化管理平台">
+            </li>
+            <li class="aside-user">
+                <div>
+                    <img src="/static_all/logo.jpg" alt="">
+                </div>
+                <div>
+                    <span>{{ user_name }}</span>
+                    <input name="userid" type="hidden" id="userid" value="{{ user_id }}">
+                    <span class="iconfont icon-zaixian"></span>
+                    <span><a href="#">在线</a></span>
+                    <span class="iconfont icon-tuichu1"></span>
+                    <span><a href="/platform/logout/">注销</a></span>
+                </div>
+            </li>
+            <li class="menu">
+                <a href="/platform/index/">
+                    <span class="iconfont icon-shouye1"></span>
+                    <span>首&nbsp;&nbsp;页</span>
+                </a>
+            </li>
+            <li class="menu" @click="testmgt">
+                <a href="#">
+                    <span style="color: green" class="iconfont icon-guanli2"></span>
+                    <span>测试管理</span>
+                </a>
+            </li>
+            <ul v-show="testmanagement">
+                <li><a href="">用例管理</a></li>
+                <li><a href="/platform/get_managecase/">用例模块</a></li>
+                <li><a href="">协议模块</a></li>
+                <li><a href="">测试计划</a></li>
+                <li><a href="">公共参数</a></li>
+            </ul>
+            <li class="menu" @click="testext">
+                <a href="#">
+                    <span style="color: orange" class="iconfont icon-zhihang"></span>
+                    <span>测试执行</span>
+                </a>
+            </li>
+            <ul v-show="testexecution">
+                <li><a href="">任务调度</a></li>
+                <li><a href="">任务执行</a></li>
+                <li><a href="">用例明细</a></li>
+            </ul>
+            <li class="menu" @click="qualitymng">
+                <a href="#">
+                    <span style="color: blue" class="iconfont icon-zhiliangjiance"></span>
+                    <span>质量管理</span>
+                </a>
+            </li>
+            <ul v-show="quality">
+                <li><a href="">版本管理</a></li>
+                <li><a href="">生产事故</a></li>
+            </ul>
+            <li class="menu" @click="systemmng">
+                <a href="#">
+                    <span style="color: hotpink" class="iconfont icon-xitong-"></span>
+                    <span>系统管理</span>
+                </a>
+            </li>
+            <ul v-show="management">
+                <li><a href="">用户管理</a></li>
+                <li><a href="/platform/get_project/">角色管理</a></li>
+                <li><a href="">部门管理</a></li>
+                <li><a href="/platform/get_project/">项目管理</a></li>
+                <li><a href="">客户端管理</a></li>
+                <li><a href="">岗位管理</a></li>
+                <li><a href="">参数设置</a></li>
+                <li><a href="">通知公告</a></li>
+                <li><a href="">日志管理</a></li>
+            </ul>
+            <li class="menu" @click="timing">
+                <a href="#">
+                    <span style="color: greenyellow" class="iconfont icon-jiankong1"></span>
+                    <span>系统监控</span>
+                </a>
+            </li>
+            <ul v-show="monitor">
+                <li><a href="">在线用户</a></li>
+                <li><a href="">定时任务</a></li>
+            </ul>
+        </ul>
+    </div>
+    <div class="navigation">
+        <div><span class="iconfont icon-zhedie"></span></div>
+        <div>
+            <div>
+                <img src="/static_all/logo.jpg" alt="">
+            </div>
+            <a>
+                <span class="name" onclick="myinformation('mydropdown','.name')">{{ user_name }}
+                    <span class="iconfont icon-xiala1"></span>
+                </span>
+            </a>
+            <ul class="dropdowns" id="mydropdown">
+                <li onclick="myclose('user-info','block')" id="user-info"><i class="iconfont icon-gerenxinxi"></i> 个人信息</li>
+                <li onclick="myclose('user-pwd','block')" id="user-pwd"><i class="iconfont icon-xiugaimima"></i> 修改密码</li>
+                <li><a href="/platform/logout/"><i class="iconfont icon-tuichudenglu"></i> 退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="search">
+        <div>
+            <div>
+                <div>项目名称:</div>
+                <div>
+                    <input v-model.lazy.trim="search_name" type="text" placeholder="请输入项目名称">
+                </div>
+            </div>
+            <div>
+                <div>创建人:</div>
+                <div>
+                    <input v-model.lazy.trim="create_user" type="text" placeholder="请输入项目创建人">
+                </div>
+            </div>
+            <div>
+                <button @click="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    搜索
+                </button>
+                <button @click="reset" style="background: #a5a5a5">
+                    <i class="iconfont icon-zhongzhi"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div id="content">
+            <div>
+                <button style="background: #00c000" @click="handle">
+                    <i class="iconfont icon-icon-test"></i>
+                    添加
+                </button>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 20%">ID</th>
+                    <th style="width: 20%">项目名称</th>
+                    <th style="width: 20%">创建者</th>
+                    <th style="width: 20%">创建日期</th>
+                    <th style="width: 20%">操作</th>
+                </tr>
+                </thead>
+                <tbody id="projectinfow">
+                    <tr v-for="project of project_list" >
+                        <td v-text="project.id"></td>
+                        <td v-text="project.project_name"></td>
+                        <td v-text="project.user_name"></td>
+                        <td >2020-6-4</td>
+                        <td >
+                            <li class="edit" @click="edit_project(project)">编辑</li>
+                            <span>|</span>
+                            <li class="delete" @click="delete_project(project)">删除</li>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <div id="paging" class="Paging"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="popup" v-show="isShow">
+        <div class="spacing">
+            <div>
+                <div style="padding-left: 15px;font-size: 18px">添加项目</div>
+                <div><i class="iconfont icon-guanbi1" id="close" @click="handle"></i></div>
+            </div>
+            <div class="input-content">
+                <div class="single-input position">
+                    <span>项目名称:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input type="text" v-model.lazy.trim="projce_name" @focus="focus" @blur.prevent="changeCount"
+                           placeholder="请输入项目名称" maxlength="20">
+                </div>
+                <span :class="{tips_info: isshow}" v-text="tips"></span>
+            </div>
+            <div>
+                <button @click="handle" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+                <button @click="add_project">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="edit_popup" v-show="edit_show">
+        <div class="spacing">
+            <div>
+                <div style="padding-left: 15px;font-size: 18px">编辑项目</div>
+                <div><i class="iconfont icon-guanbi1" id="close" @click="edit_project"></i></div>
+            </div>
+            <div class="input-content">
+                <div class="single-input position">
+                    <span>项目名称:</span>
+                    <i class="iconfont icon-bitianxiang- mustfill"></i>
+                    <input type="text" v-model.lazy.trim="projce_name" @focus="focus" @blur.prevent="changeCount" maxlength="20">
+                </div>
+                <span :class="{tipsinfo: isshow}" v-text="tips"></span>
+            </div>
+            <div>
+                <button @click="edit_project" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+                <button @click="updata_project">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="delete_pro" v-show="delete_show">
+        <div class="spacing">
+            <div>
+                <div style="padding-left: 8px;font-size: 18px">删除项目</div>
+                <div style="padding-right: 8px;font-size: 18px"><i class="iconfont icon-guanbi1"  @click="delete_project"></i></div>
+            </div>
+            <div>
+                <div i class="iconfont icon-tishi"></div>
+                <div>
+                    确定删除这个项目吗?&nbsp&nbsp删除后将不能找回...
+                </div>
+            </div>
+            <div>
+                <button @click="delete_project" style="background: white;border: 1px #a3a3a3 solid;color: black">
+                    取消
+                </button>
+                <button @click="del_project">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function all_list(url, json_data) {
+        $.ajax({
+            url: url,
+            type: "post",
+            async: false,
+            header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+            data: json_data,
+            timeout: 3000,
+            success: function (response){
+                data = response;
+            }
+        });
+
+        return data
+    }
+    var projectinfo = all_list("/platform/project_list/", {"page": 1});
+    var vm = new Vue({
+        el: '#project',
+        data: {
+            isShow: false,
+            edit_show: false,
+            project_list: projectinfo.data,
+            project_page: projectinfo.sum_page,
+            testmanagement: false,
+            testexecution: false,
+            delete_show: false,
+            quality: false,
+            management: false,
+            monitor: false,
+            projce_name: '',
+            create_user: '',
+            project_id: '',
+            search_name: '',
+            project_url: '',
+            isshow: false,
+            tips: "",
+            userid: "",
+        },
+        onload(){
+            this.getList();
+        },
+        mounted() {
+            this.userid = document.getElementById('userid').value;
+            this.paging("/platform/project_list/", {})
+        },
+
+        methods: {
+            handle: function () {
+                this.isShow = !this.isShow;
+                this.tips = '';
+                this.projce_name = '';
+            },
+            paging: function(url,json_data){
+                var that = this;
+                 $(function () {
+                     $('.Paging').pagination({
+                     count: 4,
+                     pageCount: that.project_page,
+                     coping:true,
+                     homePage:'首页',
+                     endPage:'末页',
+                     prevContent:'上页',
+                     nextContent:'下页',
+                     callback: function (index) {
+                         var project_url = url ? url : "/platform/project_list/";
+                         json_data['page'] = index.getCurrent();
+                         var project_info = all_list(project_url, json_data);
+                         that.project_list = project_info.data;
+                    }
+                });
+            });
+            },
+            edit_project: function (name) {
+                this.edit_show = !this.edit_show;
+                this.projce_name = name.project_name;
+                this.project_id = name.id;
+                this.tips = '';
+             },
+            delete_project: function (name) {
+                this.delete_show = !this.delete_show;
+                this.project_id = name.id;
+             },
+            testmgt: function () {
+                this.testmanagement = !this.testmanagement
+            },
+            testext: function () {
+                this.testexecution = !this.testexecution
+            },
+            qualitymng: function () {
+                this.quality = !this.quality
+            },
+            systemmng: function () {
+                this.management = !this.management
+            },
+            timing: function () {
+                this.monitor = !this.monitor
+            },
+            changeCount: function (event) {
+                this.projce_name = event.target.value;
+                if (!this.projce_name) {
+                    this.isshow = true;
+                    this.tips = '请输入项目名称';
+                    return false
+                } else {
+                    this.isshow = false;
+                    this.tips = ''
+                }
+            },
+            focus: function () {
+                this.isshow = false;
+                this.tips = ''
+            },
+            search: function(){
+                var that = this;
+                if (that.search_name || that.create_user) {
+                    json_data = {"project_name": that.search_name, "create_user": that.create_user, "page": 1};
+                    $.ajax({
+                        url: "/platform/search_project/",
+                        type: "post",
+                        header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                        timeout: 3000,
+                        data: json_data,
+                        success: function (response) {
+                            if (response['code'] === 0) {
+                                that.project_list = response.data;
+                                that.project_page = response.sum_page;
+                                that.paging("/platform/search_project/",{"project_name": that.search_name, "create_user": that.create_user});
+                            }
+                        }
+                    })
+                }else {
+                    var project_info = all_list("/platform/project_list/", {"page": 1});
+                    that.project_list = project_info.data;
+                    that.project_page = project_info.sum_page;
+                    that.paging("/platform/project_list/", {});
+                }
+            },
+            reset: function(){
+                this.search_name = '';
+                this.create_user = '';
+            },
+            del_project: function () {
+                //对字符串去除前后空格
+                var that = this;
+                $.ajax({
+                    url: "/platform/delete_project/",
+                    type: "post",
+                    header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    timeout: 3000,
+                    data: {"project_id": that.project_id},
+                    success: function (response) {
+                        if (response['code'] === 0) {
+                            var project_info = all_list("/platform/project_list/", {"page": 1});
+                            that.project_list = project_info.data;
+                            that.project_page= project_info.sum_page;
+                            that.paging("/platform/project_list/", {});
+                            tips('setips', '删除成功');
+                            that.delete_show = false;
+                            that.paging("/platform/project_list/", {});
+                        } else {
+                            tips('ertips','删除失败');
+                            that.delete_show = false;
+                        }
+                    }
+                })
+
+            },
+            updata_project: function () {
+                //对字符串去除前后空格
+                if (this.projce_name.trim()) {
+                    var that = this;
+                    $.ajax({
+                        url: "/platform/update_project/",
+                        type: "post",
+                        header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                        timeout: 3000,
+                        data: {"project_name": that.projce_name, "project_id": that.project_id},
+                        success: function (response) {
+                            if (response['code'] === 0) {
+                                that.project_list = all_list("/platform/project_list/", {"page": 1}).data;
+                                tips('setips', '修改成功');
+                                that.edit_show = false;
+                                that.projce_name = '';
+                            } else {
+                                tips('ertips','修改失败');
+                                that.edit_show = false;
+                                that.projce_name = '';
+                            }
+                        }
+                    })
+                } else {
+                    this.tips = '请输入项目名称';
+                    this.isshow = true;
+                    return false
+                }
+            },
+            add_project: function () {
+                //对字符串去除前后空格
+                if (this.projce_name.trim()) {
+                    var that = this;
+                    $.ajax({
+                        url: "/platform/add_project/",
+                        type: "post",
+                        header: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                        timeout: 3000,
+                        data: {"project_name": that.projce_name, "user_id": that.userid},
+                        success: function (response) {
+                            if (response['code'] === 0) {
+                                var project_info = all_list("/platform/project_list/", {"page": 1});
+                                that.project_list = project_info.data;
+                                that.project_page = project_info.sum_page;
+                                that.paging("/platform/project_list/", {});
+                                tips('setips', '添加成功');
+                                that.isShow = false;
+                                that.projce_name = '';
+                            } else {
+                                tips('ertips','添加失败');
+                                that.isShow = false;
+                                that.projce_name = '';
+                            }
+                        }
+                    })
+                } else {
+                    this.tips = '请输入项目名称';
+                    this.isshow = true;
+                    return false
+                }
+            }
+        },
+    });
+
+</script>
+</body>
+</html>

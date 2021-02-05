@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="/static_all/bootstrap/css/bootstrap.min.css">
+    <link rel="icon" href="/static_all/logo.ico" type="image/x-icon"/>
+    <title>自动化管理平台</title>
+    <style>
+        .login {
+            height: 400px;
+            min-width: 0;
+            margin: 200px auto;
+            background-color: white;
+            width: 500px;
+            border-radius: 5px;
+            padding-top: 80px;
+        }
+        .input-div{
+            width: 80%;
+            height: 90%;
+            background-color: white;
+            margin: 0 auto;
+            padding-top:-1px;
+            padding-left: 65px;
+            border-radius: 2px;
+            border: 1px solid rgba(62, 108, 125, 0.12);
+        }
+        input:focus {
+            border: 1px solid #54c5d8;
+        }
+        .input-user{
+            display: block;
+            width: 80%;
+            height: 40px;
+            margin-top: 20px;
+            border-radius: 2px;
+            border: 1px solid rgba(74, 130, 148, 0.37);
+            padding-left: 52px;
+            cursor: pointer;
+
+        }
+        .input-pwd{
+            display: block;
+            width: 80%;
+            height: 40px;
+            margin-top: -18px;
+            border-radius: 2px;
+            border: 1px solid rgba(74, 130, 148, 0.37);
+            padding-left: 52px;
+            cursor: pointer;
+        }
+        .code{
+            display: block;
+            width: 45%;
+            height: 40px;
+            margin-top: -18px;
+            border-radius: 2px;
+            border: 1px solid rgba(74, 130, 148, 0.37);
+            padding-left: 52px;
+            cursor: pointer;
+        }
+        .code-img{
+            display: inline-block;
+            width: 98px;
+            height: 40px;
+            margin-left: 125px;
+            margin-top: -40px;
+            border-radius: 2px;
+            border: 1px solid rgba(74, 130, 148, 0.37);
+            cursor: pointer;
+            position: relative;
+            vertical-align:top;
+        }
+         .inline {
+              display: inline-block;
+         }
+
+        .label{
+            height: 38px;
+            width: 40px;
+            background-color: #b6ecf3;
+            position: relative;
+            left: 1px;
+            border-radius: 2px 0 0 0;
+            padding-top: 6px;
+            padding-left: 8px;
+            border: none;
+        }
+        .top{
+          top: -39px;
+        }
+        button{
+            display: block;
+            width: 80%;
+            height: 40px;
+            margin-top: 5px;
+            border-radius: 2px;
+            background-color: #2aabd2;
+            border: 0.1px white solid;
+            cursor: pointer;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+        .tips{
+            margin-top: -30px;
+            background: white;
+            border: 0.1px white solid;
+            width: 80%;
+            border-radius: 2px;
+            color: #c8231f;
+        }
+        .frame{
+            border: -1px white solid;
+        }
+
+</style>
+</head>
+<body style="background-color: rgba(180,180,180,0.12)">
+<div class="container">
+    <div class="row">
+        <form class="login" action="/platform/login/" method="post" autocomplete="on">
+            {% csrf_token %}
+            <div class="input-div">
+                <input class="input-user" type="text" name="username" placeholder="请输入用户名">
+                <div class="inline label top">
+                    <img src="/static_all/user.ico">
+                </div>
+                <input class="input-pwd" type="password"  name="pwd" placeholder="请输入密码">
+                <div class="inline label top">
+                    <img src="/static_all/pwd.ico">
+                </div>
+                <div class="frame">
+                    <input class="code" type="text" name="code" placeholder="请输入验证码">
+                    <div class="inline label top">
+                        <img src="/static_all/code.ico">
+                    </div>
+                    <img  src="http://127.0.0.1:8080/platform/get_verify/" class="code-img"  onclick="this.src=this.src+'?d='+Math.random();" title="点击刷新">
+                </div>
+                <div class="tips">{{ msg }}</div>
+                <button type="submit">立即登录</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
